@@ -1,6 +1,6 @@
-package entities;
+package project.entities;
 
-import dao.DaoEntitiesMethod;
+import project.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 

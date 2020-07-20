@@ -1,4 +1,4 @@
-package dao;
+package project.dao;
 
 public class ConstSQLCreatTable {
     //CATEGORIES

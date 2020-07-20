@@ -1,4 +1,4 @@
-package dao;
+package project.dao;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
@@ -26,8 +26,6 @@ public class OracleDaoConnection implements DaoConnection{
         this.dataSourse = dataSourse;
 
     }
-
-
 
     @Override
     public Connection connect() {

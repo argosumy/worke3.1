@@ -1,7 +1,7 @@
-package entities;
+package project.entities;
 
-import dao.ConstSQLCreatTable;
-import dao.DaoEntitiesMethod;
+import project.dao.ConstSQLCreatTable;
+import project.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
