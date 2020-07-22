@@ -27,17 +27,17 @@ public class Product extends Entity implements DaoEntitiesMethod {
     }
 
     @Override
-    public void addEntiti(@Autowired Connection connection) throws SQLException {
+    public void addEntity(Connection con) throws SQLException {
 
     }
 
     @Override
-    public void upDateEntiti(int id) {
+    public void upDateEntity(int id) {
 
     }
 
     @Override
-    public void deleteEntiti(int id) {
+    public void deleteEntity(Connection con,int id) {
 
     }
 

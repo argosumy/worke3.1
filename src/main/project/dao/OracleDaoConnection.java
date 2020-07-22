@@ -3,6 +3,7 @@ package project.dao;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -18,6 +19,7 @@ public class OracleDaoConnection implements DaoConnection{
     private static final Logger LOGGER = Logger.getLogger(OracleDaoConnection.class);
     private Connection connection;
     private Statement statement;
+    private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     private DataSourse dataSourse;
 
@@ -84,12 +86,20 @@ public class OracleDaoConnection implements DaoConnection{
                 connection.close();
                 System.out.println("Connection was closed");
             }
-            else {System.out.println("Connection was closed");}
+            else {
+                System.out.println("Connection was closed");
+            }
             if (resultSet != null) {
                 resultSet.close();
+                System.out.println("Resultset was closed");
             }
             if(statement != null) {
                 statement.close();
+                System.out.println("Statement was closed");
+            }
+            if(preparedStatement != null){
+                preparedStatement.close();
+                System.out.println("PrepareStatment was closed");
             }
         } catch (SQLException e) {
             LOGGER.error(e);

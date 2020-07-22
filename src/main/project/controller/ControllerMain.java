@@ -20,7 +20,6 @@ public class ControllerMain {
         con.connect();
         con.creatTable();
         con.disconnect();
-        System.out.println("start");
         return "start";
     }
 
