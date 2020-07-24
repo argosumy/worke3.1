@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,9 +49,10 @@ public class OracleDaoConnection implements DaoConnection{
         }
         return connection;
     }
-
+    @PostConstruct
     @Override
     public void creatTable() {
+        connection = connect();
         int i = 0;
         try {
             statement = connection.createStatement();
@@ -105,6 +107,8 @@ public class OracleDaoConnection implements DaoConnection{
             LOGGER.error(e);
         }
     }
+
+
 
 
 

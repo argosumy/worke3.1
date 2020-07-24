@@ -1,20 +1,18 @@
 package project.entities;
 
 import project.dao.ConstSQLCreatTable;
-import project.dao.DaoConnection;
 import project.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class Categories extends Entity implements DaoEntitiesMethod {
-    private String description;
-    private int parentId;
+    public String description;
+    public int parentId;
     private static final Logger LOGGER = Logger.getLogger(Categories.class);
 
 
@@ -25,6 +23,11 @@ public class Categories extends Entity implements DaoEntitiesMethod {
 
     public Categories(String name, String description, int parentId) {
         super(name);
+        this.description = description;
+        this.parentId = parentId;
+    }
+    public Categories(int id, String name, String description, int parentId) {
+        super(id,name);
         this.description = description;
         this.parentId = parentId;
     }
@@ -67,6 +70,33 @@ public class Categories extends Entity implements DaoEntitiesMethod {
         }
     }
 
+    @Override
+    public List<Entity> showAllEntity(Connection con) {
+        List categoriesList = new ArrayList<Categories>();
+        try{
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(ConstSQLCreatTable.SHOW_ALL_CATEGORIES);
+            while (resultSet.next()){
+                int id = resultSet.getInt("CATEGORY_ID");
+                String name = resultSet.getString("NAME");
+                String description = resultSet.getString("DESCRIPTION");
+                int parentId = resultSet.getInt("PARENT_ID");
+                Categories categories = new Categories(id,name,description,parentId);
+                System.out.println(categories.toString());
+                categoriesList.add(categories);
+            }
+        }
+        catch (SQLException e){
+            LOGGER.error("ERROR method showAllEntity in Categories",e);
+        }
+        return categoriesList;
+    }
+
+    @Override
+    public List<Entity> showAllEntityCategory(Connection con) {
+        return null;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -81,5 +111,10 @@ public class Categories extends Entity implements DaoEntitiesMethod {
 
     public void setParentId(int parentId) {
         this.parentId = parentId;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " " + this.description + " " + this.parentId;
     }
 }

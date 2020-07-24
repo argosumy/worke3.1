@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Product extends Entity implements DaoEntitiesMethod {
     private String description;
@@ -39,6 +40,16 @@ public class Product extends Entity implements DaoEntitiesMethod {
     @Override
     public void deleteEntity(Connection con,int id) {
 
+    }
+
+    @Override
+    public List<Entity> showAllEntity(Connection connection) {
+        return null;
+    }
+
+    @Override
+    public List<Entity> showAllEntityCategory(Connection connection) {
+        return null;
     }
 
     public String getDescription() {
