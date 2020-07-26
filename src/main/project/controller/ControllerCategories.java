@@ -16,14 +16,7 @@ import java.util.List;
 public class ControllerCategories {
     private Categories categories;
     private DaoConnection con;
-    private static List<Entity> persons = new ArrayList<>();
 
-  /*  static {
-        persons.add(new Entity(1, "Gates") {
-        });
-        persons.add(new Entity(2, "Jobs") {
-        });
-    }*/
 
     @Autowired
     public void setCon(DaoConnection con) {
@@ -40,7 +33,14 @@ public class ControllerCategories {
         return "categoryShow";
     }
 
-
+    /**
+     * Метод добавления новой строки в таблицу BOOK_CATEGORIES
+     * @param name Название категории
+     * @param description Описание категории
+     * @param id ID родительской категории
+     * @param model categories - обновленный список всех категории после добавления новой
+     * @return
+     */
     @PostMapping ("/addCategories")
     public String addCategories(@RequestParam(value = "name")String name,
                                 @RequestParam(value = "description")String description,
@@ -56,13 +56,49 @@ public class ControllerCategories {
         return "categoryShow";
     }
 
-    @GetMapping("/delCategories/{id}")
-    public String delCategories(@PathVariable(value= "id") int id){
+    /**
+     *Метод удаления и редактирования категории
+     */
+    @GetMapping("/Category/{action}/{id}")
+    public String delCategories(@PathVariable(value= "id") int id,
+                                @PathVariable(value = "action") String action,
+                                Model model){
+        Connection connection = con.connect();
         categories = new Categories();
-        categories.deleteEntity(con.connect(),id);
+        List<Entity> categoriesList;
+        if(action.equals("del")){
+            categories.deleteEntity(connection,id);
+            categoriesList = categories.showAllEntity(connection);
+            model.addAttribute("categories",categoriesList);
+        }
+        if(action.equals("upDate")){
+            categories = (Categories) categories.getEntityID(connection,id);
+            categoriesList = new ArrayList<>();
+            categoriesList.add(categories);
+            model.addAttribute("categories",categoriesList);
+            model.addAttribute("upDate", true);
+        }
         con.disconnect();
         return "categoryShow";
     }
+
+
+
+    /*@GetMapping("/updateCategory/{id}")
+    public String updateCategory(@PathVariable(value = "id")int id,
+                                 @RequestParam(value = "name", defaultValue = "")String name,
+                                 @RequestParam(value = "description", defaultValue = "")String description,
+                                 @RequestParam(value = "parentId",defaultValue = "")int parentId,
+                                 Model model){
+        categories = new Categories();
+        Connection connection = con.connect();
+        Categories entity = (Categories) categories.getEntityID(connection,id);
+        List<Categories> res = new ArrayList();
+        res.add(entity);
+        model.addAttribute("categories",res);
+        return "categoryAddEdit";
+    }*/
+
 
 
 }

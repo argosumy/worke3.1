@@ -48,7 +48,7 @@ public class Product extends Entity implements DaoEntitiesMethod {
     }
 
     @Override
-    public List<Entity> showAllEntityCategory(Connection connection) {
+    public Entity getEntityID(Connection connection, int id) {
         return null;
     }
 

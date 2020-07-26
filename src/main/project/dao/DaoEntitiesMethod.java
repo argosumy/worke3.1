@@ -11,6 +11,6 @@ public interface DaoEntitiesMethod {
     public void addEntity(Connection connection) throws SQLException;
     public void upDateEntity(int id);
     public void deleteEntity(Connection connection,int id);
+    public Entity getEntityID(Connection connection, int id);
     public List<Entity> showAllEntity(Connection connection);
-    public List<Entity> showAllEntityCategory(Connection connection);
     }

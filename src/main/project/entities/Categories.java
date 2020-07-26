@@ -1,6 +1,6 @@
 package project.entities;
 
-import project.dao.ConstSQLCreatTable;
+import project.dao.ConstSQLTable;
 import project.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ public class Categories extends Entity implements DaoEntitiesMethod {
     @Override
     public void addEntity(Connection connection)  {
         try {
-            PreparedStatement prStatement = connection.prepareStatement(ConstSQLCreatTable.ADD_CATEGORIES);
+            PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.ADD_CATEGORIES);
             prStatement.setString(1,this.getName());
             prStatement.setString(2,description);
             prStatement.setInt(3,parentId);
@@ -61,7 +61,7 @@ public class Categories extends Entity implements DaoEntitiesMethod {
     @Override
     public void deleteEntity(Connection con,int id) {
         try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLCreatTable.DELETE_CATEGORIES_ID);
+            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.DELETE_CATEGORIES_ID);
             prStatement.setInt(1,id);
             prStatement.executeUpdate();
         }
@@ -75,7 +75,7 @@ public class Categories extends Entity implements DaoEntitiesMethod {
         List categoriesList = new ArrayList<Categories>();
         try{
             Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery(ConstSQLCreatTable.SHOW_ALL_CATEGORIES);
+            ResultSet resultSet = statement.executeQuery(ConstSQLTable.SHOW_ALL_CATEGORIES);
             while (resultSet.next()){
                 int id = resultSet.getInt("CATEGORY_ID");
                 String name = resultSet.getString("NAME");
@@ -93,8 +93,23 @@ public class Categories extends Entity implements DaoEntitiesMethod {
     }
 
     @Override
-    public List<Entity> showAllEntityCategory(Connection con) {
-        return null;
+    public Entity getEntityID(Connection con, int id) {
+        Entity category = null;
+        try {
+            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.SHOW_CATEGORIES_ID);
+            prStatement.setInt(1,id);
+            ResultSet resultSet = prStatement.executeQuery();
+            resultSet.next();
+            int idCategory = resultSet.getInt("CATEGORY_ID");
+            String name = resultSet.getString("NAME");
+            String description = resultSet.getString("DESCRIPTION");
+            int parentId = resultSet.getInt("PARENT_ID");
+            category = new Categories(idCategory,name,description,parentId);
+        }
+        catch (SQLException e){
+            LOGGER.error("ERROR method showEntityID in Categories",e);
+        }
+        return category ;
     }
 
     public String getDescription() {

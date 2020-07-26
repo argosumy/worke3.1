@@ -30,11 +30,16 @@
                 <td>${category.name}</td>
                 <td></td>
                 <td></td>
-                <td><a href="<c:url value="${category.id}"/>">Редактировать</a></td>>
-                <td><a href="<c:url value="/delCategories/${category.id}"/>">Удалить</a></td>
+                <td><a href="<c:url value="/Category/upDate/${category.id}"/>">Редактировать</a></td>>
+                <td><a href="<c:url value="/Category/del/${category.id}"/>">Удалить</a></td>
             </tr>
         </c:forEach>
-        <tr>ВВОД НОВОЙ КАТЕГОРИИ</tr>
+        <c:if test="${upDate}">
+            <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ КАТЕГОРИИ</tr>
+        </c:if>
+        <c:if test="${!upDate}">
+            <tr>ВВОД НОВОЙ КАТЕГОРИИ</tr>
+        </c:if>
         <form action="addCategories" method="post">
             <td>Категория</td>>
             <td><input name="name" type="text" content="НАЗВАНИЕ КАТЕГОРИИ"/></td>

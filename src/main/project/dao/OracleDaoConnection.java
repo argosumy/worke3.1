@@ -1,9 +1,9 @@
 package project.dao;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -34,9 +34,19 @@ public class OracleDaoConnection implements DaoConnection{
     public Connection connect() {
         Locale.setDefault(Locale.ENGLISH);
         try {
+            ComboPooledDataSource cpds = new ComboPooledDataSource();
+            cpds.setJdbcUrl(dataSourse.getConnectionUrl());
+            cpds.setUser(dataSourse.getUserName());
+            cpds.setPassword(dataSourse.getPassword());
+            //Settings
+            cpds.setInitialPoolSize(dataSourse.getInitialPoolSize());
+            cpds.setMinPoolSize(dataSourse.getMinPoolSize());
+            cpds.setAcquireIncrement(dataSourse.getAcquireIncrement());
+            cpds.setMaxPoolSize(dataSourse.getMaxPoolSize());
+            connection =  cpds.getConnection();
             Class.forName(dataSourse.getDriverClass()).getDeclaredConstructor().newInstance();
-            connection = DriverManager.getConnection(dataSourse.getConnectionUrl(),
-                    dataSourse.getUserName(), dataSourse.getPassword());
+           // connection = DriverManager.getConnection(dataSourse.getConnectionUrl(),
+            //        dataSourse.getUserName(), dataSourse.getPassword());
             if (!connection.isClosed()) {
                 System.out.println("Connected successful!");
             }
@@ -49,6 +59,7 @@ public class OracleDaoConnection implements DaoConnection{
         }
         return connection;
     }
+
     @PostConstruct
     @Override
     public void creatTable() {
