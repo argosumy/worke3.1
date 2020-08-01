@@ -9,8 +9,9 @@ import java.util.List;
 
 public interface DaoEntitiesMethod {
     public void addEntity(Connection connection) throws SQLException;
-    public void upDateEntity(int id);
+    public void upDateEntity(Connection connection,int id);
     public void deleteEntity(Connection connection,int id);
     public Entity getEntityID(Connection connection, int id);
     public List<Entity> showAllEntity(Connection connection);
+    public List<Entity> showEntityByParentId(Connection connection);
     }

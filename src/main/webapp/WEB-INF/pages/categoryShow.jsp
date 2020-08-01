@@ -24,24 +24,26 @@
                 <th colspan="2"></th>
             </tr>
         </th>
-        <c:forEach var="category" items="${categories}">
+        <c:forEach var ="category" items="${categories}" >
             <tr>
                 <td>${category.id}</td>
                 <td>${category.name}</td>
-                <td></td>
-                <td></td>
+                <td>${category.description}</td>
+                <td>${category.parentId}</td>
                 <td><a href="<c:url value="/Category/upDate/${category.id}"/>">Редактировать</a></td>>
                 <td><a href="<c:url value="/Category/del/${category.id}"/>">Удалить</a></td>
             </tr>
         </c:forEach>
         <c:if test="${upDate}">
             <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ КАТЕГОРИИ</tr>
+            <c:set var="action" value="/updateCategory/${categories[0].id}"/>
         </c:if>
         <c:if test="${!upDate}">
             <tr>ВВОД НОВОЙ КАТЕГОРИИ</tr>
+            <c:set var="action" value="/addCategories"/>
         </c:if>
-        <form action="addCategories" method="post">
-            <td>Категория</td>>
+        <form action="${action}" method="post">
+            <td>Автозаполнение</td>>
             <td><input name="name" type="text" content="НАЗВАНИЕ КАТЕГОРИИ"/></td>
             <td><input name="description" type="text"/></td>
             <td><input name="id" type="number" min=0/></td>

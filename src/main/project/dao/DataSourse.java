@@ -37,7 +37,6 @@ public class DataSourse {
         this.acquireIncrement = acquireIncrement;
         this.maxPoolSize = maxPoolSize;
         this.minPoolSize = minPoolSize;
-
     }
 
 

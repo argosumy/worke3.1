@@ -44,7 +44,7 @@ public class ControllerCategories {
     @PostMapping ("/addCategories")
     public String addCategories(@RequestParam(value = "name")String name,
                                 @RequestParam(value = "description")String description,
-                                @RequestParam(value = "id")int id, Model model){
+                                @RequestParam(value = "id", defaultValue = "1")int id, Model model){
         categories = new Categories(name,description,id);
         System.out.println(categories.toString());
         Connection connection = con.connect();
@@ -65,7 +65,7 @@ public class ControllerCategories {
                                 Model model){
         Connection connection = con.connect();
         categories = new Categories();
-        List<Entity> categoriesList;
+        List<Entity> categoriesList = new ArrayList<>();
         if(action.equals("del")){
             categories.deleteEntity(connection,id);
             categoriesList = categories.showAllEntity(connection);
@@ -73,7 +73,6 @@ public class ControllerCategories {
         }
         if(action.equals("upDate")){
             categories = (Categories) categories.getEntityID(connection,id);
-            categoriesList = new ArrayList<>();
             categoriesList.add(categories);
             model.addAttribute("categories",categoriesList);
             model.addAttribute("upDate", true);
@@ -84,20 +83,40 @@ public class ControllerCategories {
 
 
 
-    /*@GetMapping("/updateCategory/{id}")
+    @PostMapping("/updateCategory/{id}")
     public String updateCategory(@PathVariable(value = "id")int id,
                                  @RequestParam(value = "name", defaultValue = "")String name,
                                  @RequestParam(value = "description", defaultValue = "")String description,
-                                 @RequestParam(value = "parentId",defaultValue = "")int parentId,
+                                 @RequestParam(value = "parentId",defaultValue = "0")int parentId,
                                  Model model){
         categories = new Categories();
+        Categories categoriesUpDate = new Categories();
         Connection connection = con.connect();
-        Categories entity = (Categories) categories.getEntityID(connection,id);
-        List<Categories> res = new ArrayList();
-        res.add(entity);
+        categories  = (Categories) categories.getEntityID(connection,id);
+        if (name.equals("")){
+            categoriesUpDate.setName(categories.getName());
+        }
+        else {
+            categoriesUpDate.setName(name);
+        }
+        if (description.equals("")){
+            categoriesUpDate.setName(categories.getDescription());
+        }
+        else {
+            categoriesUpDate.setDescription(description);
+        }
+        if (parentId == 0) {
+            categoriesUpDate.setParentId(categories.getParentId());
+        }
+        else {
+            categoriesUpDate.setParentId(parentId);
+        }
+        categoriesUpDate.upDateEntity(connection,id);
+
+        List<Entity> res = categories.showAllEntity(connection);
         model.addAttribute("categories",res);
-        return "categoryAddEdit";
-    }*/
+        return "categoryShow";
+    }
 
 
 

@@ -54,8 +54,19 @@ public class Categories extends Entity implements DaoEntitiesMethod {
     }
 
     @Override
-    public void upDateEntity(int id) {
-
+    public void upDateEntity(Connection con,int id) {
+        //"UPDATE BOOK_CATEGORIES SET NAME = ?,DESCRIPTION = ?,PARENT_ID = ? WHERE CATEGORY_ID = ?"
+        try {
+            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.UPDATE_CATEGORY_ID);
+            prStatement.setString(1,this.getName());
+            prStatement.setString(2,this.getDescription());
+            prStatement.setInt(3,this.getParentId());
+            prStatement.setInt(4,id);
+            prStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            LOGGER.error("ERROR method delete Entiti in Categories",e);
+        }
     }
 
     @Override
@@ -110,6 +121,11 @@ public class Categories extends Entity implements DaoEntitiesMethod {
             LOGGER.error("ERROR method showEntityID in Categories",e);
         }
         return category ;
+    }
+
+    @Override
+    public List<Entity> showEntityByParentId(Connection connection) {
+        return null;
     }
 
     public String getDescription() {

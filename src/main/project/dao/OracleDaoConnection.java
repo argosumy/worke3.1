@@ -4,16 +4,23 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.Property;
+import org.springframework.core.io.support.PropertySourceFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
+import javax.activation.DataSource;
 import javax.annotation.PostConstruct;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.Locale;
+import java.util.Properties;
 
 @Repository
 public class OracleDaoConnection implements DaoConnection{
@@ -30,35 +37,50 @@ public class OracleDaoConnection implements DaoConnection{
 
     }
 
-    @Override
+  /*  @Override
     public Connection connect() {
-        Locale.setDefault(Locale.ENGLISH);
         try {
-            ComboPooledDataSource cpds = new ComboPooledDataSource();
-            cpds.setJdbcUrl(dataSourse.getConnectionUrl());
-            cpds.setUser(dataSourse.getUserName());
-            cpds.setPassword(dataSourse.getPassword());
-            //Settings
-            cpds.setInitialPoolSize(dataSourse.getInitialPoolSize());
-            cpds.setMinPoolSize(dataSourse.getMinPoolSize());
-            cpds.setAcquireIncrement(dataSourse.getAcquireIncrement());
-            cpds.setMaxPoolSize(dataSourse.getMaxPoolSize());
-            connection =  cpds.getConnection();
-            Class.forName(dataSourse.getDriverClass()).getDeclaredConstructor().newInstance();
-           // connection = DriverManager.getConnection(dataSourse.getConnectionUrl(),
-            //        dataSourse.getUserName(), dataSourse.getPassword());
-            if (!connection.isClosed()) {
-                System.out.println("Connected successful!");
-            }
-        }
-        catch (SQLException e) {
-            LOGGER.error("Ошибка в настройках SourseName- ",e);
-        }
-        catch (Exception ex){
-            LOGGER.error(ex);
+            Properties properties = new Properties();
+            properties.put("driverClass",dataSourse.getDriverClass());
+            InitialContext context = new InitialContext(properties);
+            Context envContext  = (Context)context.lookup("java:/comp/env");
+            DataSource dataSourse = (DataSource)envContext.lookup();
+
+
         }
         return connection;
-    }
+    }*/
+
+       @Override
+        public Connection connect() {
+            Locale.setDefault(Locale.ENGLISH);
+            try {
+                ComboPooledDataSource cpds = new ComboPooledDataSource();
+                cpds.setJdbcUrl(dataSourse.getConnectionUrl());
+                cpds.setUser(dataSourse.getUserName());
+                cpds.setPassword(dataSourse.getPassword());
+                cpds.setDriverClass(dataSourse.getDriverClass());
+                //Settings
+                cpds.setInitialPoolSize(dataSourse.getInitialPoolSize());
+                cpds.setMinPoolSize(dataSourse.getMinPoolSize());
+                cpds.setAcquireIncrement(dataSourse.getAcquireIncrement());
+                cpds.setMaxPoolSize(dataSourse.getMaxPoolSize());
+                connection =  cpds.getConnection();
+                //Class.forName(dataSourse.getDriverClass()).getDeclaredConstructor().newInstance();
+                // connection = DriverManager.getConnection(dataSourse.getConnectionUrl(),
+                //        dataSourse.getUserName(), dataSourse.getPassword());
+                if (!connection.isClosed()) {
+                    System.out.println("Connected successful!");
+                }
+            }
+            catch (SQLException e) {
+                LOGGER.error("Ошибка в настройках SourseName- ",e);
+            }
+            catch (Exception ex){
+                LOGGER.error(ex);
+            }
+            return connection;
+        }
 
     @PostConstruct
     @Override
