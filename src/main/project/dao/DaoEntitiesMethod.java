@@ -13,5 +13,4 @@ public interface DaoEntitiesMethod {
     public void deleteEntity(Connection connection,int id);
     public Entity getEntityID(Connection connection, int id);
     public List<Entity> showAllEntity(Connection connection);
-    public List<Entity> showEntityByParentId(Connection connection);
     }

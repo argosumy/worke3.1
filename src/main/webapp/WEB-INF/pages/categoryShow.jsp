@@ -10,10 +10,11 @@
 <html>
 <head>
     <title>ShowCategory</title>
+    <style><%@include file="css/style.css"%></style>
+    <meta charset="UTF-8">
 </head>
 <body>
     <h3>Категории</h3>
-    <!--<a href="<c:url value=""/>"Добавить категорию</a>-->
     <table border="1" width="100%">
         <th>
             <tr>
@@ -44,13 +45,15 @@
         </c:if>
         <form action="${action}" method="post">
             <td>Автозаполнение</td>>
-            <td><input name="name" type="text" content="НАЗВАНИЕ КАТЕГОРИИ"/></td>
+            <td><input name="name" type="text"  content="НАЗВАНИЕ КАТЕГОРИИ"/></td>
             <td><input name="description" type="text"/></td>
             <td><input name="id" type="number" min=0/></td>
             <td><input type="submit" value="ВВЕСТИ" /> </td>
             <td><input type="reset" value="ОТМЕНИТЬ ВВОД" /></td>
         </form>
     </table>
-
+<div>
+    <h3><a href="<c:url value="/"/>">Главное меню</a></h3>
+</div>
 </body>
 </html>

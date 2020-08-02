@@ -23,7 +23,7 @@ public class ControllerCategories {
         this.con = con;
     }
 
-    @GetMapping("/categoryShow")
+    @GetMapping("/admin/categoryShow")
     public String getCategoriesShow(Model model){
         Connection connection = con.connect();
         categories = new Categories();
@@ -115,6 +115,7 @@ public class ControllerCategories {
 
         List<Entity> res = categories.showAllEntity(connection);
         model.addAttribute("categories",res);
+        con.disconnect();
         return "categoryShow";
     }
 

@@ -18,6 +18,7 @@ public class Categories extends Entity implements DaoEntitiesMethod {
 
 
     public Categories() {
+
         super();
     }
 
@@ -123,9 +124,27 @@ public class Categories extends Entity implements DaoEntitiesMethod {
         return category ;
     }
 
-    @Override
-    public List<Entity> showEntityByParentId(Connection connection) {
-        return null;
+
+    public List<Categories> showEntityByParentId(Connection con, int parentID) {
+        List <Categories>categoriesList = new ArrayList();
+        try{
+            PreparedStatement statement = con.prepareStatement(ConstSQLTable.SHOW_CATEGORIES_BY_PARENT);
+            statement.setInt(1,parentID);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                int id = resultSet.getInt("CATEGORY_ID");
+                String name = resultSet.getString("NAME");
+                String description = resultSet.getString("DESCRIPTION");
+                int parentId = resultSet.getInt("PARENT_ID");
+                Categories categories = new Categories(id,name,description,parentId);
+                System.out.println(categories.toString());
+                categoriesList.add(categories);
+            }
+        }
+        catch (SQLException e){
+            LOGGER.error("ERROR method showAllEntity in Categories",e);
+        }
+        return categoriesList;
     }
 
     public String getDescription() {

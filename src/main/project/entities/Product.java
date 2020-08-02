@@ -1,5 +1,6 @@
 package project.entities;
 
+import org.springframework.security.access.method.P;
 import project.dao.ConstSQLTable;
 import project.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
@@ -60,7 +61,20 @@ public class Product extends Entity implements DaoEntitiesMethod {
 
     @Override
     public void upDateEntity(Connection con,int id) {
-
+//"UPDATE BOOK_PRODUCT SET NAME = ?,DESCRIPTION = ?,PRICE = ?,IS_ACTIVE = ?,CATEGORY_ID = ? WHERE PRODUCT_ID = ?"
+        try {
+            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.UPDATE_PRODUCT_ID);
+            prStatement.setString(1,this.getName());
+            prStatement.setString(2,this.description);
+            prStatement.setFloat(3,this.price);
+            prStatement.setInt(4,this.isActive);
+            prStatement.setInt(5,this.categoryId);
+            prStatement.setInt(6,id);
+            prStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            LOGGER.error("ERROR method delete Entiti in Product",e);
+        }
     }
 
     @Override
@@ -78,6 +92,7 @@ public class Product extends Entity implements DaoEntitiesMethod {
     @Override
     public List<Entity> showAllEntity(Connection con) {
         List productList = new ArrayList<Product>();
+        Categories category;
         try{
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(ConstSQLTable.SHOW_ALL_PRODUCTS);
@@ -89,7 +104,9 @@ public class Product extends Entity implements DaoEntitiesMethod {
                 int isActive = resultSet.getInt("IS_ACTIVE");
                 int categoryId = resultSet.getInt("CATEGORY_ID");
                 Product product = new Product(id,name,description,price,isActive,categoryId);
-                System.out.println(product.toString());
+                category = new Categories();
+                category =(Categories) category.getEntityID(con,categoryId);
+                product.setCategories(category);
                 productList.add(product);
             }
         }
@@ -98,7 +115,28 @@ public class Product extends Entity implements DaoEntitiesMethod {
         }
         return productList;
     }
-
+    public List<Product> showEntityByParentId(Connection con,int parentId){
+        Product product;
+        List productList = new ArrayList<Product>();
+        try {
+            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.SHOW_PRODUCTS_BY_CATEGORY_ID);
+            prStatement.setInt(1,parentId);
+            ResultSet resultSet = prStatement.executeQuery();
+            while (resultSet.next()){
+                int idProduct = resultSet.getInt("PRODUCT_ID");
+                String name = resultSet.getString("NAME");
+                String description = resultSet.getString("DESCRIPTION");
+                float price = resultSet.getFloat("PRICE");
+                int isActive = resultSet.getInt("IS_ACTIVE");
+                int categoryId = resultSet.getInt("CATEGORY_ID");
+                product = new Product(idProduct,name,description,price,isActive,categoryId);
+                productList.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productList;
+    }
 
     @Override
     public Entity getEntityID(Connection con, int id) {
@@ -122,10 +160,7 @@ public class Product extends Entity implements DaoEntitiesMethod {
         return product ;
     }
 
-    @Override
-    public List<Entity> showEntityByParentId(Connection connection) {
-        return null;
-    }
+
 
     public String getDescription() {
         return description;
@@ -151,6 +186,14 @@ public class Product extends Entity implements DaoEntitiesMethod {
         isActive = active;
     }
 
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public Categories getCategories() {
         return categories;
     }
@@ -158,4 +201,5 @@ public class Product extends Entity implements DaoEntitiesMethod {
     public void setCategories(Categories categories) {
         this.categories = categories;
     }
+
 }

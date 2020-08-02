@@ -4,23 +4,17 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.Property;
-import org.springframework.core.io.support.PropertySourceFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
-import javax.activation.DataSource;
 import javax.annotation.PostConstruct;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.Locale;
-import java.util.Properties;
 
 @Repository
 public class OracleDaoConnection implements DaoConnection{
@@ -30,6 +24,11 @@ public class OracleDaoConnection implements DaoConnection{
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     private DataSourse dataSourse;
+    private ComboPooledDataSource spds;
+    @Autowired
+    public void setSpds(ComboPooledDataSource spds) {
+        this.spds = spds;
+    }
 
     @Autowired()
     public OracleDaoConnection(DataSourse dataSourse) {
@@ -37,20 +36,36 @@ public class OracleDaoConnection implements DaoConnection{
 
     }
 
-  /*  @Override
+    @Override
     public Connection connect() {
+        Locale.setDefault(Locale.ENGLISH);
+      /*  try {
+           Class.forName(dataSourse.getDriverClass()).getDeclaredConstructor().newInstance();
+           connection = DriverManager.getConnection(dataSourse.getConnectionUrl(),
+                        dataSourse.getUserName(), dataSourse.getPassword());
+
+
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }*/
         try {
-            Properties properties = new Properties();
-            properties.put("driverClass",dataSourse.getDriverClass());
-            InitialContext context = new InitialContext(properties);
-            Context envContext  = (Context)context.lookup("java:/comp/env");
-            DataSource dataSourse = (DataSource)envContext.lookup();
-
-
+            connection = spds.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return connection;
-    }*/
-
+    }
+/*
        @Override
         public Connection connect() {
             Locale.setDefault(Locale.ENGLISH);
@@ -81,6 +96,7 @@ public class OracleDaoConnection implements DaoConnection{
             }
             return connection;
         }
+*/
 
     @PostConstruct
     @Override
@@ -112,7 +128,6 @@ public class OracleDaoConnection implements DaoConnection{
             }
         }
     }
-
 
     @Override
     public void disconnect() {

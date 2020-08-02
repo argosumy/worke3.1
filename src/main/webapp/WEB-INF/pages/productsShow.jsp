@@ -10,6 +10,8 @@
 <html>
 <head>
     <title>Товары</title>
+    <style><%@include file="css/style.css"%></style>
+    <meta charset="UTF-8">
 </head>
 <body>
 <h3>Товары</h3>
@@ -32,21 +34,23 @@
             <td>${product.name}</td>
             <td>${product.description}</td>
             <td>${product.price}</td>
-            <td>${product.name}</td>
-            <td></td>
+            <td>${product.isActive}</td>
+            <td>${product.getCategories().getName()}</td>
             <td><a href="<c:url value="/Product/upDate/${product.id}"/>">Редактировать</a></td>>
             <td><a href="<c:url value="/Product/del/${product.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
     </table>
-<table>
+<table border="1" width="100%">
     <c:if test="${upDate}">
         <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ ТОВАРА</tr>
+        <c:set var="action" value="/productUpDate/${products[0].id}"/>
     </c:if>
     <c:if test="${!upDate}">
         <tr>ВВОД НОВОГО ТОВАРА </tr>
+        <c:set var="action" value="/addProduct"/>
     </c:if>
-    <form action="/addProduct" method="post">
+    <form action="${action}" method="post">
         <td><input name="name" type="text" placeholder="НАЗВАНИЕ ТОВАРА"/></td>
         <td><input name="description" type="text" placeholder="ОПИСАНИЕ ТОВАРА"/></td>
         <td><input name="price" type="text" placeholder="СТОИМОСТЬ"/></td>
@@ -56,6 +60,8 @@
         <td><input type="reset" value="ОТМЕНИТЬ ВВОД" /></td>
     </form>
 </table>
-
+<div>
+    <h3><a href="<c:url value="/"/>">Главное меню</a></h3>
+</div>
 </body>
 </html>
