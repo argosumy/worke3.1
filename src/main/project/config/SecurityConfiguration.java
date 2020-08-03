@@ -25,6 +25,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .csrf().disable().authorizeRequests();//???
-
     }
 }
