@@ -1,4 +1,4 @@
-package main.project.dao;
+package main.java.dao;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;

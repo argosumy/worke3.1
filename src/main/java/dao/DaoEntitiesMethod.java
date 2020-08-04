@@ -1,6 +1,6 @@
-package main.project.dao;
+package main.java.dao;
 
-import main.project.entities.Entity;
+import main.java.entities.Entity;
 
 import java.sql.Connection;
 import java.sql.SQLException;

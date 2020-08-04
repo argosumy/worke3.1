@@ -1,4 +1,4 @@
-package main.project.dao;
+package main.java.dao;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

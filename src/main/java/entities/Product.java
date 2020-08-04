@@ -1,6 +1,6 @@
-package main.project.entities;
-import main.project.dao.ConstSQLTable;
-import main.project.dao.DaoEntitiesMethod;
+package main.java.entities;
+import main.java.dao.ConstSQLTable;
+import main.java.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
 
 import java.sql.*;

@@ -1,4 +1,4 @@
-package main.project.entities;
+package main.java.entities;
 
 public abstract class Entity {
     private int id;

@@ -1,6 +1,6 @@
-package main.project.controller;
+package main.java.controller;
 
-import main.project.entities.Product;
+import main.java.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import main.project.dao.DaoConnection;
-import main.project.entities.Entity;
+import main.java.dao.DaoConnection;
+import main.java.entities.Entity;
 
 import java.sql.Connection;
 import java.util.ArrayList;

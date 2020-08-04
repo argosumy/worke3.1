@@ -1,4 +1,4 @@
-package main.project.config;
+package main.java.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

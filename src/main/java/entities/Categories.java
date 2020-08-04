@@ -1,7 +1,7 @@
-package main.project.entities;
+package main.java.entities;
 
-import main.project.dao.ConstSQLTable;
-import main.project.dao.DaoEntitiesMethod;
+import main.java.dao.ConstSQLTable;
+import main.java.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
