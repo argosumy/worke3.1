@@ -1,4 +1,4 @@
-package main.java.config;
+package project.config;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;

@@ -1,4 +1,4 @@
-package main.java.dao;
+package project.dao;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
@@ -11,10 +11,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.sql.*;
 import java.util.Hashtable;
 import java.util.Locale;
@@ -68,7 +65,9 @@ public class OracleDaoConnection implements DaoConnection{
         if(i == 0){
             System.out.println("Создание таблиц");
             try {
-                File creatTables = ResourceUtils.getFile("classpath:createTables.sql");
+               // File creatTables = ResourceUtils.getFile("classpath:createTables.sql");
+               // File creatTables = new ClassPathResource("/createTables.sql").getFile();
+                File creatTables = ResourceUtils.getFile("file:e:\\Мои документы\\Lab3\\worke3\\src\\main\\resources\\createTables.sql");
                 ScriptRunner scriptRunner = new ScriptRunner(connection);
                 scriptRunner.setDelimiter("/");
                 scriptRunner.setStopOnError(false);
@@ -78,6 +77,9 @@ public class OracleDaoConnection implements DaoConnection{
             }
             catch (FileNotFoundException e){
                 LOGGER.error(e);
+                System.out.println(e);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

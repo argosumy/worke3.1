@@ -1,8 +1,8 @@
-package main.java.controller;
+package project.controller;
 
-import main.java.dao.DaoConnection;
-import main.java.entities.Categories;
-import main.java.entities.Product;
+import project.dao.DaoConnection;
+import project.entities.Categories;
+import project.entities.Product;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

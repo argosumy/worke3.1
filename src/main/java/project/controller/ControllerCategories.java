@@ -1,8 +1,8 @@
-package main.java.controller;
+package project.controller;
 
-import main.java.dao.DaoConnection;
-import main.java.entities.Categories;
-import main.java.entities.Entity;
+import project.dao.DaoConnection;
+import project.entities.Categories;
+import project.entities.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

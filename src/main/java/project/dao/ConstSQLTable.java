@@ -1,4 +1,4 @@
-package main.java.dao;
+package project.dao;
 
 public class ConstSQLTable {
     //CATEGORIES_TABLE
