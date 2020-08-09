@@ -15,4 +15,9 @@ public class ConstSQLTable {
     public final static String DELETE_PRODUCT_ID = "DELETE FROM BOOK_PRODUCT WHERE PRODUCT_ID = ?";
     public final static String SHOW_PRODUCT_ID = "SELECT * FROM BOOK_PRODUCT WHERE PRODUCT_ID = ?";
     public final static String UPDATE_PRODUCT_ID = "UPDATE BOOK_PRODUCT SET NAME = ?,DESCRIPTION = ?,PRICE = ?,IS_ACTIVE = ?,CATEGORY_ID = ? WHERE PRODUCT_ID = ?";
+
+    public final static String SHOW_ALL_ACCOUNTS = "SELECT * FROM BOOK_LOGIN";
+    public final static String SELECT_LOGIN_PASSWORD_ROLE = "SELECT ID, LOGIN, PASSWORD,ROLE from BOOK_LOGIN WHERE LOGIN=?";
+    public final static String SELECT_LOGIN_PASSWORD = "SELECT LOGIN, '{noop}'||PASSWORD, 'true' from BOOK_LOGIN WHERE LOGIN=?";
+    public final static String SELECT_LOGIN_ROLE = "SELECT LOGIN, ROLE BOOK_LOGIN WHERE LOGIN=?";
 }

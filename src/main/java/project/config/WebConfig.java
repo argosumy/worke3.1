@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "project")
@@ -15,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer  {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/WEB-INF/pages/**").addResourceLocations("/pages/");
+        registry.addResourceHandler("/resources/pages/**").addResourceLocations("/pages/");
     }
 
     @Bean
@@ -26,7 +27,6 @@ public class WebConfig implements WebMvcConfigurer  {
         resolver.setSuffix(".jsp");
     return resolver;
     }
-
 
 
 

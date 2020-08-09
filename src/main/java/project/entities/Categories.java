@@ -93,7 +93,6 @@ public class Categories extends Entity implements DaoEntitiesMethod {
                 String description = resultSet.getString("DESCRIPTION");
                 int parentId = resultSet.getInt("PARENT_ID");
                 Categories categories = new Categories(id,name,description,parentId);
-                System.out.println(categories.toString());
                 categoriesList.add(categories);
             }
         }
@@ -136,7 +135,6 @@ public class Categories extends Entity implements DaoEntitiesMethod {
                 String description = resultSet.getString("DESCRIPTION");
                 int parentId = resultSet.getInt("PARENT_ID");
                 Categories categories = new Categories(id,name,description,parentId);
-                System.out.println(categories.toString());
                 categoriesList.add(categories);
             }
         }

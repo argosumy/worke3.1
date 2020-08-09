@@ -6,18 +6,30 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import project.service.MyUserDetailsService;
+
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    UserDetailsService userDetailService;
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("VALERA").password("{noop}QWERTY").roles("ADMIN");
 
-        //auth.userDetailsService(userDetailService);
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
+
+    @Autowired
+    MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        //  auth.inMemoryAuthentication()
+      //        .withUser("VALERA").password("{noop}QWERTY").roles("ADMIN");
+        /* auth
+                 .jdbcAuthentication()
+                 .dataSource(oracleDaoConnection.dataSource)
+                 .usersByUsernameQuery(ConstSQLTable.SELECT_LOGIN_PASSWORD)
+                 .authoritiesByUsernameQuery(ConstSQLTable.SELECT_LOGIN_ROLE);
+                 */
+
+         auth.userDetailsService(myUserDetailsService);
     }
 
     @Override
@@ -29,8 +41,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and();
             //  .csrf().disable().authorizeRequests();//???
     }
-
-
-
 
 }

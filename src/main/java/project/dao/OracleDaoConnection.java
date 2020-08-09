@@ -14,35 +14,40 @@ import javax.sql.DataSource;
 import java.io.*;
 import java.sql.*;
 import java.util.Hashtable;
-import java.util.Locale;
 
 @Repository
 public class OracleDaoConnection implements DaoConnection{
     private static final Logger LOGGER = Logger.getLogger(OracleDaoConnection.class);
     private Connection connection;
-    private Context ctx;
     private Statement statement;
     private PreparedStatement preparedStatement;
-    private Hashtable<String, String> ht = new Hashtable<>();
     private ResultSet resultSet;
-    private DataSourse dataSourse;
+    @Autowired
+    private DataSourseMy dataSourseMy;
+    public DataSource dataSource;
+    public OracleDaoConnection() {
+    }
 
-    @Autowired()
-    public OracleDaoConnection(DataSourse dataSourse) {
-        this.dataSourse = dataSourse;
-
+    @Override
+    public DataSource getDataSource() {
+        Hashtable<String, String> ht = new Hashtable<>();
+        DataSource ds = null;
+        ht.put(Context.INITIAL_CONTEXT_FACTORY,dataSourseMy.getFactory());
+        ht.put(Context.PROVIDER_URL, dataSourseMy.getUrl());
+        try {
+            Context ctx = new InitialContext(ht);
+            ds = (DataSource) ctx.lookup(dataSourseMy.getNameJNDI());
+        }catch ( NamingException e){
+            LOGGER.error(e);
+        }
+        return ds;
     }
 
     @Override
     public Connection connect() {
-        Locale.setDefault(Locale.ENGLISH);
-        ht.put(Context.INITIAL_CONTEXT_FACTORY,dataSourse.getFactory());
-        ht.put(Context.PROVIDER_URL, dataSourse.getUrl());
         try {
-            ctx = new InitialContext(ht);
-            DataSource ds = (DataSource) ctx.lookup(dataSourse.getDataSourse());
-            connection = ds.getConnection();
-        } catch (NamingException | SQLException e) {
+            connection = dataSource.getConnection();
+        } catch (SQLException  e) {
             LOGGER.error("Error in connection to db", e);
         }
         return connection;
@@ -65,9 +70,9 @@ public class OracleDaoConnection implements DaoConnection{
         if(i == 0){
             System.out.println("Создание таблиц");
             try {
-               // File creatTables = ResourceUtils.getFile("classpath:createTables.sql");
+                File creatTables = ResourceUtils.getFile("classpath:createTables.sql");
                // File creatTables = new ClassPathResource("/createTables.sql").getFile();
-                File creatTables = ResourceUtils.getFile("file:e:\\Мои документы\\Lab3\\worke3\\src\\main\\resources\\createTables.sql");
+               // File creatTables = ResourceUtils.getFile("file:e:\\Мои документы\\Lab3\\worke3\\src\\main\\resources\\createTables.sql");
                 ScriptRunner scriptRunner = new ScriptRunner(connection);
                 scriptRunner.setDelimiter("/");
                 scriptRunner.setStopOnError(false);
@@ -78,8 +83,6 @@ public class OracleDaoConnection implements DaoConnection{
             catch (FileNotFoundException e){
                 LOGGER.error(e);
                 System.out.println(e);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -111,7 +114,10 @@ public class OracleDaoConnection implements DaoConnection{
         }
     }
 
-
+    @PostConstruct
+    public void setDataSource() {
+        this.dataSource = getDataSource();
+    }
 
     public Connection getConnection() {
         return connection;
@@ -137,13 +143,7 @@ public class OracleDaoConnection implements DaoConnection{
         this.resultSet = resultSet;
     }
 
-    public DataSourse getDataSourse() {
-        return dataSourse;
-    }
 
-    public void setDataSourse(DataSourse dataSourse) {
-        this.dataSourse = dataSourse;
-    }
 
 
 }

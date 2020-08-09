@@ -6,27 +6,27 @@ import org.springframework.stereotype.Component;
 
 @Component
 @PropertySource("classpath:application.properties")
-public class DataSourse {
-    private String dataSourse;
+public class DataSourseMy {
+    private String nameJNDI;
     private String url;
     private String factory;
 
 
-    public DataSourse(@Value("${data.JNDIname}")String dataSourse,
-                      @Value("${url}")String url,
-                      @Value("${factory}")String factory)
+    public DataSourseMy(@Value("${data.JNDIname}")String nameJNDI,
+                        @Value("${url}")String url,
+                        @Value("${factory}")String factory)
     {
-        this.dataSourse = dataSourse;
+        this.nameJNDI = nameJNDI;
         this.url = url;
         this.factory = factory;
     }
 
-    public String getDataSourse() {
-        return dataSourse;
+    public String getNameJNDI() {
+        return nameJNDI;
     }
 
-    public void setDataSourse(String dataSourse) {
-        this.dataSourse = dataSourse;
+    public void setNameJNDI(String nameJNDI) {
+        this.nameJNDI = nameJNDI;
     }
 
     public String getUrl() {
