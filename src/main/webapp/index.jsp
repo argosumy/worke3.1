@@ -8,10 +8,10 @@
 <body>
 <header>
     <div class="logout">
-        <a href="<c:url value='/logout' />">Выйти из меню редактирования</a>
+        <a href="<c:url value='/logout' />">LOGOUT</a>
     </div>
-
 </header>
+
     <h1>Справочник биологически активных добавок</h1>
     <ul class="menu-main">
         <li><a href=/admin/categoryShow>Работа с категориями</a></li>

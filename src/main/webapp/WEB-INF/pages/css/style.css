@@ -31,11 +31,8 @@ ul{
     box-sizing: content-box;
 }
 .logout{
-    right:50%;
-    border-style:ridge;
-    border-color: whitesmoke;
-    border-width: 3px;
-    float: right;
+    margin-left: 50%;
+    color: green;
 }
 .menu-main{
     height: 100%;

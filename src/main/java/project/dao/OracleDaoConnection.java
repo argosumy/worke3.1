@@ -1,17 +1,21 @@
 package project.dao;
 
-import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.EncodedResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ResourceUtils;
+import java.sql.Connection;
+
 
 import javax.annotation.PostConstruct;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Hashtable;
 
@@ -19,6 +23,8 @@ import java.util.Hashtable;
 public class OracleDaoConnection implements DaoConnection{
     private static final Logger LOGGER = Logger.getLogger(OracleDaoConnection.class);
     private Connection connection;
+    @Autowired
+    ResourceLoader resourceLoader;
     private Statement statement;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
@@ -70,18 +76,20 @@ public class OracleDaoConnection implements DaoConnection{
         if(i == 0){
             System.out.println("Создание таблиц");
             try {
-                File creatTables = ResourceUtils.getFile("classpath:createTables.sql");
+                Resource resourceCreation = resourceLoader.getResource("classpath:createTables.sql");
+                EncodedResource encodeRes = new EncodedResource(resourceCreation,StandardCharsets.UTF_8);
+                ScriptUtils.executeSqlScript(connection,encodeRes,false,false,"--","/","/*","*/");
+
+                // File creatTables = ResourceUtils.getFile("classpath:createTables.sql");
                // File creatTables = new ClassPathResource("/createTables.sql").getFile();
-               // File creatTables = ResourceUtils.getFile("file:e:\\Мои документы\\Lab3\\worke3\\src\\main\\resources\\createTables.sql");
-                ScriptRunner scriptRunner = new ScriptRunner(connection);
+                //File creatTables = ResourceUtils.getFile("file:e:\\Мои документы\\Lab3\\worke3\\src\\main\\resources\\createTables.sql");
+                /*ScriptRunner scriptRunner = new ScriptRunner(connection);
                 scriptRunner.setDelimiter("/");
                 scriptRunner.setStopOnError(false);
                 scriptRunner.setAutoCommit(true);
                 scriptRunner.setSendFullScript(false);
-                scriptRunner.runScript(new BufferedReader(new FileReader(creatTables)));
-            }
-            catch (FileNotFoundException e){
-                LOGGER.error(e);
+                scriptRunner.runScript(new BufferedReader(new FileReader(creatTables)));*/
+            }catch (Exception e){
                 System.out.println(e);
             }
         }
