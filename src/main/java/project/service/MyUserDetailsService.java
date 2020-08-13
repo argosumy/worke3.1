@@ -17,10 +17,11 @@ import java.util.Optional;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
     private List<Entity> users = new ArrayList();
-    @Autowired
-    DaoConnection con;
+    private final DaoConnection con;
 
-    public MyUserDetailsService(){
+    @Autowired
+    public MyUserDetailsService(DaoConnection con){
+        this.con = con;
     }
 
 

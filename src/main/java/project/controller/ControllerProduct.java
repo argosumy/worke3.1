@@ -18,10 +18,10 @@ import java.util.List;
 @Controller
 public class ControllerProduct {
     Product product;
-    DaoConnection con;
+    private final DaoConnection con;
 
     @Autowired
-    public void setCon(DaoConnection con) {
+    public ControllerProduct(DaoConnection con) {
         this.con = con;
     }
 

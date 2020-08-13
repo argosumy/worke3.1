@@ -16,11 +16,11 @@ import java.util.List;
 public class ControllerBook {
     private Categories categories;
     private Product product;
-    private DaoConnection con;
+    private final DaoConnection con;
 
 
     @Autowired
-    public void setCon(DaoConnection con) {
+    public ControllerBook(DaoConnection con) {
         this.con = con;
     }
 

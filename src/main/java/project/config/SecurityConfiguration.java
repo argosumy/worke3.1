@@ -13,11 +13,14 @@ import project.service.MyUserDetailsService;
 @EnableWebSecurity
 
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
+    private final MyUserDetailsService myUserDetailsService;
 
     @Autowired
-    MyUserDetailsService myUserDetailsService;
-
+    SecurityConfiguration(MyUserDetailsService myUserDetailsService){
+        this.myUserDetailsService = myUserDetailsService;
+    }
     @Autowired
+    @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         //  auth.inMemoryAuthentication()

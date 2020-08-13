@@ -15,11 +15,11 @@ import java.util.List;
 @Controller
 public class ControllerCategories {
     private Categories categories;
-    private DaoConnection con;
+    private final DaoConnection con;
 
 
     @Autowired
-    public void setCon(DaoConnection con) {
+    public ControllerCategories(DaoConnection con) {
         this.con = con;
     }
 

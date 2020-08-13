@@ -23,15 +23,18 @@ import java.util.Hashtable;
 public class OracleDaoConnection implements DaoConnection{
     private static final Logger LOGGER = Logger.getLogger(OracleDaoConnection.class);
     private Connection connection;
-    @Autowired
-    ResourceLoader resourceLoader;
+    private final ResourceLoader resourceLoader;
     private Statement statement;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
-    @Autowired
-    private DataSourseMy dataSourseMy;
+    private final DataSourseMy dataSourseMy;
     public DataSource dataSource;
-    public OracleDaoConnection() {
+
+
+    @Autowired
+    public OracleDaoConnection(ResourceLoader resourceLoader,DataSourseMy dataSourseMy){
+        this.resourceLoader = resourceLoader;
+        this.dataSourseMy = dataSourseMy;
     }
 
     @Override

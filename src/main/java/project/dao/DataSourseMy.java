@@ -14,8 +14,7 @@ public class DataSourseMy {
 
     public DataSourseMy(@Value("${data.JNDIname}")String nameJNDI,
                         @Value("${url}")String url,
-                        @Value("${factory}")String factory)
-    {
+                        @Value("${factory}")String factory){
         this.nameJNDI = nameJNDI;
         this.url = url;
         this.factory = factory;
