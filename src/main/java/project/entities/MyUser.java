@@ -72,7 +72,18 @@ public class MyUser extends Entity implements DaoEntitiesMethod {
     }
 
     @Override
-    public void deleteEntity(Connection connection, int id) {
+    public void deleteEntity(Connection con, int id) {
+        try {
+            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.DELETE_LOGIN_ID_USER);
+            prStatement.setInt(1,id);
+            prStatement.executeUpdate();
+            prStatement = con.prepareStatement(ConstSQLTable.DELETE_USERS_ID);
+            prStatement.setInt(1,id);
+            prStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            LOGGER.error("ERROR method delete Entiti in Categories",e);
+        }
 
     }
 

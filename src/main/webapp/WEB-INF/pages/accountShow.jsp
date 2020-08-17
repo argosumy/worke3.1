@@ -38,8 +38,7 @@
             <td><a href="<c:url value="/admin/User/del/${account.getId()}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
-</table>
-<table>
+
     <c:if test="${upDate}">
         <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ АДМИНИСТРАТОРА</tr>
         <c:set var="action" value="/admin/updateUser/${accauntList[0].id}"/>
