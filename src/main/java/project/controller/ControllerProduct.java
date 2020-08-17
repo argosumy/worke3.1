@@ -26,7 +26,7 @@ public class ControllerProduct {
     }
 
     @GetMapping("/admin/productShow")
-    public String getCategoriesShow(Model model) {
+    public String getProductShow(Model model) {
         Connection connection = con.connect();
         product = new Product();
         List<Entity> productsList = product.showAllEntity(connection);
@@ -34,7 +34,7 @@ public class ControllerProduct {
         con.disconnect();
         return "productsShow";
     }
-    @PostMapping("/addProduct")
+    @PostMapping("/admin/addProduct")
     public String addCategories(@RequestParam(value = "name")String name,
                                 @RequestParam(value = "description",defaultValue = "")String description,
                                 @RequestParam(value = "price", defaultValue = "0")float price,
@@ -52,7 +52,7 @@ public class ControllerProduct {
         return "productsShow";
     }
 
-    @GetMapping("/Product/{action}/{id}")
+    @GetMapping("/admin/Product/{action}/{id}")
     public String delProduct(@PathVariable(value= "id") int id,
                              @PathVariable(value = "action") String action,
                                 Model model){
@@ -74,7 +74,7 @@ public class ControllerProduct {
         return "productsShow";
     }
 
-    @PostMapping("/productUpDate/{id}")
+    @PostMapping("/admin/productUpDate/{id}")
     public String upDateProduct(@PathVariable(value = "id")int id,
                                 @RequestParam(value = "name",defaultValue = "")String name,
                                 @RequestParam(value = "description",defaultValue = "")String description,

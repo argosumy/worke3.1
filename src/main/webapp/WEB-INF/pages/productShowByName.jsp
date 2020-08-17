@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: User
@@ -20,5 +21,8 @@
         <h3>${product.description}</h3>
     </div>
 </body>
-
+<div>
+    <h3><a href="<c:url value="/"/>">Главное меню</a></h3>
+    <h3><a href="<c:url value="/"/>">Возврат</a></h3>
+</div>
 </html>

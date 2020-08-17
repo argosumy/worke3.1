@@ -2,51 +2,29 @@ package project.entities;
 
 import org.apache.log4j.Logger;
 import project.dao.ConstSQLTable;
-import project.dao.DaoEntitiesMethod;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PasswordLogin extends Entity implements DaoEntitiesMethod {
-    private static final Logger LOGGER = Logger.getLogger(PasswordLogin.class);
+public class Account extends Entity  {
+    private static final Logger LOGGER = Logger.getLogger(Account.class);
     private String password;
     private String role;
     private int id_user;
 
-    public PasswordLogin() {
-    }
 
-    public PasswordLogin(String login, String password, int id_user) {
+    public Account(){}
+
+    public Account(String login, String password, int id_user) {
         super(login);
         this.password = password;
         this.id_user = id_user;
         this.role = "ADMIN";
     }
 
-    @Override
-    public void addEntity(Connection connection) throws SQLException {
-
-    }
-
-    @Override
-    public void upDateEntity(Connection connection, int id) {
-
-    }
-
-    @Override
-    public void deleteEntity(Connection connection, int id) {
-
-    }
-
-    @Override
-    public Entity getEntityID(Connection connection, int id) {
-        return null;
-    }
-
-    @Override
     public List<Entity> showAllEntity(Connection con) {
-        List accountList = new ArrayList<PasswordLogin>();
+        List accountList = new ArrayList<Account>();
         try{
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(ConstSQLTable.SHOW_ALL_ACCOUNTS);
@@ -54,8 +32,8 @@ public class PasswordLogin extends Entity implements DaoEntitiesMethod {
                 //int id = resultSet.getInt("ID");
                 String login = resultSet.getString("LOGIN");
                 String password = resultSet.getString("PASSWORD");
-                int userId = resultSet.getInt("ID_USER");
-                PasswordLogin account = new PasswordLogin(login,password,userId);
+                int userId = resultSet.getInt("ID");
+                Account account = new Account(login,password,userId);
                 accountList.add(account);
             }
         }
@@ -65,8 +43,8 @@ public class PasswordLogin extends Entity implements DaoEntitiesMethod {
         return accountList;
     }
 
-    public PasswordLogin getEntityName(Connection con, String login){
-        PasswordLogin account = null;
+    public Account getEntityName(Connection con, String login){
+        Account account = null;
         try {
             PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.SELECT_LOGIN_PASSWORD_ROLE);
             prStatement.setString(1, login);
@@ -75,13 +53,19 @@ public class PasswordLogin extends Entity implements DaoEntitiesMethod {
             String loginNew = resultSet.getString("LOGIN");
             String password = resultSet.getString("PASSWORD");
             int idUser = resultSet.getInt("ID_USER");
-            account = new PasswordLogin(loginNew,password,id_user);
+            account = new Account(loginNew,password,id_user);
         }
         catch (SQLException e){
             LOGGER.error("ERROR method showEntityID in Products",e);
         }
         return account;
     }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
     public String getPassword() {
         return password;
     }
@@ -90,7 +74,19 @@ public class PasswordLogin extends Entity implements DaoEntitiesMethod {
         this.password = password;
     }
 
-    public String getROLE() {
+    public String getRole() {
         return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
     }
 }

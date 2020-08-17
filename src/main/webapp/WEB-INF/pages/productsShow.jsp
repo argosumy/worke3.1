@@ -44,7 +44,7 @@
 <table border="1" width="100%">
     <c:if test="${upDate}">
         <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ ТОВАРА</tr>
-        <c:set var="action" value="/productUpDate/${products[0].id}"/>
+        <c:set var="action" value="/admin/productUpDate/${products[0].id}"/>
     </c:if>
     <c:if test="${!upDate}">
         <tr>ВВОД НОВОГО ТОВАРА </tr>

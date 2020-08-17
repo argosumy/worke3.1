@@ -16,7 +16,8 @@
     <ul class="menu-main">
         <li><a href=/admin/categoryShow>Работа с категориями</a></li>
         <li><a href=/admin/productShow>Работа с товрами</a></li>
-        <li><a href=/showBook/1 >Показать товары</a></li>
+        <li><a href=/showBook/1>Показать товары</a></li>
+        <li><a href=/admin/userShow>Работа с администраторами</a></li>
     </ul>
 </body>
 </html>

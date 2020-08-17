@@ -31,17 +31,17 @@
                 <td>${category.name}</td>
                 <td>${category.description}</td>
                 <td>${category.parentId}</td>
-                <td><a href="<c:url value="/Category/upDate/${category.id}"/>">Редактировать</a></td>>
-                <td><a href="<c:url value="/Category/del/${category.id}"/>">Удалить</a></td>
+                <td><a href="<c:url value="/admin/Category/upDate/${category.id}"/>">Редактировать</a></td>>
+                <td><a href="<c:url value="/admin/Category/del/${category.id}"/>">Удалить</a></td>
             </tr>
         </c:forEach>
         <c:if test="${upDate}">
             <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ КАТЕГОРИИ</tr>
-            <c:set var="action" value="/updateCategory/${categories[0].id}"/>
+            <c:set var="action" value="/admin/updateCategory/${categories[0].id}"/>
         </c:if>
         <c:if test="${!upDate}">
             <tr>ВВОД НОВОЙ КАТЕГОРИИ</tr>
-            <c:set var="action" value="/addCategories"/>
+            <c:set var="action" value="/admin/addCategories"/>
         </c:if>
         <form action="${action}" method="post">
             <td>Автозаполнение</td>>
