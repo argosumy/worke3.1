@@ -38,7 +38,6 @@ public class ControllerUser implements ControllerEntities {
         return "accountShow";
     }
 
-
     @PostMapping("/admin/addUser")
     public String addEntity(@RequestParam(value = "name") String name,
                             @RequestParam(value = "lastName") String lastName,
@@ -72,10 +71,10 @@ public class ControllerUser implements ControllerEntities {
     public String delCategories(@PathVariable(value= "id") int id,
                                 @PathVariable(value = "action") String action,
                                 Model model){
+        Connection connection = con.connect();
+        List<Entity> myUsersList = new ArrayList<>();
         if(id != 1) { //ограничение на удаление первого администратора
-            Connection connection = con.connect();
             myUser = new MyUser();
-            List<Entity> myUsersList = new ArrayList<>();
             if (action.equals("del")) {
                 myUser.deleteEntity(connection, id);
                 myUsersList = myUser.showAllEntity(connection);
@@ -87,8 +86,60 @@ public class ControllerUser implements ControllerEntities {
                 model.addAttribute("myUsers", myUsersList);
                 model.addAttribute("upDate", true);
             }
-            con.disconnect();
         }
+        else{
+            myUsersList = myUser.showAllEntity(connection);
+            model.addAttribute("myUsers", myUsersList);
+        }
+        con.disconnect();
+        return "accountShow";
+    }
+
+    @PostMapping("/admin/updateUser/{id}")
+    public String updateCategory(@PathVariable(value = "id")int id,
+                                 @RequestParam(value = "name", defaultValue = "") String name,
+                                 @RequestParam(value = "lastName", defaultValue = "") String lastName,
+                                 @RequestParam(value = "phone", defaultValue = "") String phone,
+                                 @RequestParam(value = "login", defaultValue = "") String login,
+                                 @RequestParam(value = "password", defaultValue = "") String password,
+                                 Model model){
+        MyUser myUserUpDate = new MyUser();
+        Connection connection = con.connect();
+        myUser  = (MyUser) myUser.getEntityID(connection,id);
+        Account accountUpDate = new Account();
+        if (name.equals("")){
+            myUserUpDate.setName(myUser.getName());
+        }
+        else {
+            myUserUpDate.setName(name);
+        }
+        if (lastName.equals("")){
+            myUserUpDate.setLastName(myUser.getLastName());
+        }
+        else {
+            myUserUpDate.setLastName(lastName);
+        }
+        if (phone.equals("")) {
+            myUserUpDate.setPhone(myUser.getPhone());
+        }
+        else {
+            myUserUpDate.setPhone(phone);
+        }
+        if (login.equals("")){
+            accountUpDate.setName(myUser.getAccount().getName());
+        }
+        else {
+            accountUpDate.setName(login);
+        }
+        if(password.equals("")){
+            accountUpDate.setPassword(myUser.getAccount().getPassword());
+        }
+        else accountUpDate.setPassword(password);
+        myUserUpDate.setAccount(accountUpDate);
+        myUserUpDate.upDateEntity(connection,id);
+        List<Entity> res = myUser.showAllEntity(connection);
+        model.addAttribute("myUsers",res);
+        con.disconnect();
         return "accountShow";
     }
 }

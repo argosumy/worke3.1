@@ -18,11 +18,15 @@ public class ConstSQLTable {
     //BOOK_USERS_TABLE
     public final static String SHOW_ALL_ACCOUNTS = "SELECT users.ID,NAME,LAST_NAME,PHONE,LOGIN,PASSWORD,ROLE FROM " +
             "BOOK_USERS users INNER JOIN BOOK_LOGIN account ON (users.ID = account.ID_USER)";
+    public final static String SHOW_ACCOUNTS_BY_ID = "SELECT users.ID,NAME,LAST_NAME,PHONE,LOGIN,PASSWORD,ROLE FROM " +
+            "BOOK_USERS users INNER JOIN BOOK_LOGIN account ON (users.ID = account.ID_USER) WHERE users.ID = ?";
     public final static String ADD_USER = "INSERT INTO BOOK_USERS(name,last_name,phone)values(?,?,?)";
     public final static String ADD_ACCOUNT = "INSERT INTO BOOK_LOGIN(LOGIN,PASSWORD,ROLE,ID_USER)values(?,?,?,?)";
     public final static String SELECT_LOGIN_PASSWORD_ROLE = "SELECT ID, LOGIN, PASSWORD,ROLE from BOOK_LOGIN WHERE LOGIN=?";
     public final static String DELETE_USERS_ID = "DELETE FROM BOOK_USERS WHERE ID = ?";
     public final static String DELETE_LOGIN_ID_USER = "DELETE FROM BOOK_LOGIN WHERE ID_USER = ?";
+    public final static String UPDATE_USER_ID = "UPDATE BOOK_USERS SET NAME = ?,LAST_NAME = ?,PHONE = ? WHERE ID = ?";
+    public final static String UPDATE_ACCOUNT_ID_USER = "UPDATE BOOK_LOGIN SET LOGIN = ?,PASSWORD = ? WHERE ID_USER = ?";
     public final static String SELECT_LOGIN_PASSWORD = "SELECT LOGIN, '{noop}'||PASSWORD, 'true' from BOOK_LOGIN WHERE LOGIN=?";
     public final static String SELECT_LOGIN_ROLE = "SELECT LOGIN, ROLE BOOK_LOGIN WHERE LOGIN=?";
 }

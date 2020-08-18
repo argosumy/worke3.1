@@ -56,19 +56,36 @@ public class MyUser extends Entity implements DaoEntitiesMethod {
             prStatement.executeUpdate();
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method insert Entiti in Product",e);
+            LOGGER.error("ERROR method insert Entiti in Users",e);
             System.out.println(e);
         }
         catch (Exception e){
-            LOGGER.error("ERROR method insert Entiti in Product",e);
+            LOGGER.error("ERROR method insert Entiti in Users",e);
             System.out.println(e);
         }
 
     }
 
     @Override
-    public void upDateEntity(Connection connection, int id) {
-
+    public void upDateEntity(Connection con, int id) {
+        try {
+          //UPDATE BOOK_USERS SET NAME = ?,LAST_NAME = ?,PHONE = ? WHERE ID = ?";
+            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.UPDATE_USER_ID);
+            prStatement.setString(1,this.getName());
+            prStatement.setString(2,this.getLastName());
+            prStatement.setString(3,this.getPhone());
+            prStatement.setInt(4,id);
+            prStatement.executeUpdate();
+          //UPDATE BOOK_LOGIN SET LOGIN = ?,PASSWORD = ? WHERE ID_USER = ?
+            prStatement = con.prepareStatement(ConstSQLTable.UPDATE_ACCOUNT_ID_USER);
+            prStatement.setString(1,this.getAccount().getName());
+            prStatement.setString(2,this.getAccount().getPassword());
+            prStatement.setInt(3,id);
+            prStatement.executeUpdate();
+        }
+        catch (SQLException e){
+            LOGGER.error("ERROR method delete Entiti in Categories",e);
+        }
     }
 
     @Override
@@ -89,7 +106,27 @@ public class MyUser extends Entity implements DaoEntitiesMethod {
 
     @Override
     public Entity getEntityID(Connection connection, int id) {
-        return null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        MyUser user = null;
+        try {
+            preparedStatement = connection.prepareStatement(ConstSQLTable.SHOW_ACCOUNTS_BY_ID);
+            preparedStatement.setInt(1,id);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            int userId = resultSet.getInt(1);
+            String name = resultSet.getString("NAME");
+            String lastName = resultSet.getString("LAST_NAME");
+            String phone = resultSet.getString("PHONE");
+            String login = resultSet.getString("LOGIN");
+            String password = resultSet.getString("PASSWORD");
+            String role = resultSet.getString("ROLE");
+            Account account = new Account(login,password,userId);
+            user = new MyUser(userId,name,lastName,phone,account);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     @Override

@@ -41,7 +41,7 @@
 
     <c:if test="${upDate}">
         <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ АДМИНИСТРАТОРА</tr>
-        <c:set var="action" value="/admin/updateUser/${accauntList[0].id}"/>
+        <c:set var="action" value="/admin/updateUser/${myUsers[0].id}"/>
     </c:if>
     <c:if test="${!upDate}">
         <tr>ВВОД НОВОГО АДМИНИСТРАТОРА</tr>
