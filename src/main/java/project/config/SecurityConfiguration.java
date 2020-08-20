@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import project.service.MyUserDetailsService;
 
 
@@ -24,7 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         //  auth.inMemoryAuthentication()
-      //        .withUser("VALERA").password("{noop}QWERTY").roles("ADMIN");
+          //    .withUser("user").password("{noop}qwerty").roles("ADMIN");
         /* auth
                  .jdbcAuthentication()
                  .dataSource(oracleDaoConnection.dataSource)
@@ -41,8 +42,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
+                .loginPage("/login")
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .and()
                 .csrf().disable().authorizeRequests();//???
     }
+
 
 }

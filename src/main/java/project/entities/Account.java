@@ -56,7 +56,7 @@ public class Account extends Entity  {
             account = new Account(loginNew,password,id_user);
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method showEntityID in Products",e);
+            LOGGER.error("ERROR method showEntityID in Account",e);
         }
         return account;
     }

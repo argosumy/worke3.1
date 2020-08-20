@@ -32,12 +32,11 @@ public class ControllerBook {
         List<Product> productList = null;
         categories = new Categories();
         product = new Product();
-
         categoriesList = categories.showEntityByParentId(connection,idCategory);
         productList = product.showEntityByParentId(connection,idCategory);
         model.addAttribute("categories",categoriesList);
         model.addAttribute("products",productList);
-
+        model.addAttribute("category", categories.getEntityID(connection,idCategory));
         con.disconnect();
         return "bookShow";
     }
@@ -46,7 +45,9 @@ public class ControllerBook {
     public String showProduct(@PathVariable(value = "id")int id, Model model){
         Connection connection = con.connect();
         product = new Product();
-        model.addAttribute("product",product.getEntityID(connection,id));
+        product = (Product) product.getEntityID(connection,id);
+        model.addAttribute("product", product);
+        model.addAttribute("idCategory", product.getCategoryId());
         return "productShowByName";
     }
 

@@ -16,6 +16,12 @@
 <body>
 
 <h1>BOOK Dietary supplement</h1>
+<c:if test="${category.id > 1}">
+    <div class="d">
+        <h3>${category.name}</h3>
+    </div>
+</c:if>
+
 <div>
     <ul>
         <c:forEach var ="category" items="${categories}" >

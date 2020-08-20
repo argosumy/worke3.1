@@ -22,7 +22,7 @@
     </div>
 </body>
 <div>
-    <h3><a href="<c:url value="/"/>">Главное меню</a></h3>
-    <h3><a href="<c:url value="/"/>">Возврат</a></h3>
+    <h3><a href="<c:url value="/showBook/1"/>">Главное меню</a></h3>
+    <h3><a href="<c:url value="/showBook/${idCategory}"/>">Возврат</a></h3>
 </div>
 </html>
