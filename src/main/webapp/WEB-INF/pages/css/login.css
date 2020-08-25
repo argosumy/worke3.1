@@ -1,0 +1,39 @@
+.centrHader {
+    font-size: 30px;
+    text-align: center;
+    margin:5% 0% 0% 0%;
+    color: #54D5FF;
+    font-family: "Microsoft Yi Baiti", monospace;
+}
+.centr{
+    background: #2db34a;
+    border-radius: 10px;
+    color: #fff;
+    display: block;
+    padding: 1% 2% 1% 2%;
+    text-align: center;
+    width: 20%;
+    margin: 10px 40%;
+
+}
+.eror{
+    background:#FF1945;
+}
+.btn{
+    padding: 1% 2% 1% 2%;
+    background: #54D5FF;
+    text-align: center;
+    margin:5% 10%;
+    color: white;
+}
+.size{
+    margin: 10px;
+}
+.logout{
+    z-index: 2;
+    background: indianred;
+    padding: auto;
+    position: fixed;
+    text-align: center;
+    margin-left: 1%;
+}

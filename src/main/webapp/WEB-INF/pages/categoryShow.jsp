@@ -6,17 +6,22 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>ShowCategory</title>
     <style><%@include file="css/style.css"%></style>
+    <style><%@include file="css/login.css"%></style>
     <meta charset="UTF-8">
 </head>
 <body>
+<header>
+    <div class="logout">
+        <a href="<c:url value='/logout' />">LOGOUT</a>
+    </div>
+</header>
     <h3>Категории</h3>
     <table border="1" width="100%">
-        <th>
             <tr>
                 <th>ID</th>
                 <th>Название</th>
@@ -24,7 +29,6 @@
                 <th>Родительская категория</th>
                 <th colspan="2"></th>
             </tr>
-        </th>
         <c:forEach var ="category" items="${categories}" >
             <tr>
                 <td>${category.id}</td>
@@ -47,7 +51,7 @@
             <td>Автозаполнение</td>>
             <td><input name="name" type="text"  content="НАЗВАНИЕ КАТЕГОРИИ"/></td>
             <td><input name="description" type="text"/></td>
-            <td><input name="id" type="number" min=0/></td>
+            <td><input name="parentId" type= "number" min="1"/></td>
             <td><input type="submit" value="ВВЕСТИ" /> </td>
             <td><input type="reset" value="ОТМЕНИТЬ ВВОД" /></td>
         </form>

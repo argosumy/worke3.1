@@ -46,12 +46,10 @@ public class ControllerCategories {
                                 @RequestParam(value = "description")String description,
                                 @RequestParam(value = "id", defaultValue = "1")int id, Model model){
         categories = new Categories(name,description,id);
-        System.out.println(categories.toString());
         Connection connection = con.connect();
         categories.addEntity(connection);
         List<Entity> categoriesList = categories.showAllEntity(connection);
         con.disconnect();
-        System.out.println("СПИСОК " + categoriesList.toString());
         model.addAttribute("categories",categoriesList);
         return "categoryShow";
     }
@@ -100,7 +98,7 @@ public class ControllerCategories {
             categoriesUpDate.setName(name);
         }
         if (description.equals("")){
-            categoriesUpDate.setName(categories.getDescription());
+            categoriesUpDate.setDescription(categories.getDescription());
         }
         else {
             categoriesUpDate.setDescription(description);

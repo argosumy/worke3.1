@@ -79,7 +79,7 @@ public class ControllerProduct {
                                 @RequestParam(value = "name",defaultValue = "")String name,
                                 @RequestParam(value = "description",defaultValue = "")String description,
                                 @RequestParam(value = "price",defaultValue = "0")float price,
-                                @RequestParam(value = "is_active",defaultValue = "-1")int is_active,
+                                @RequestParam(value = "isActive",defaultValue = "-1")int is_active,
                                 @RequestParam(value = "category_id",defaultValue = "0")int categoryId,
                                 Model model
                                 ){

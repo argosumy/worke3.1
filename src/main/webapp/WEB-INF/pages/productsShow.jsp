@@ -6,14 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Товары</title>
     <style><%@include file="css/style.css"%></style>
+    <style><%@include file="css/login.css"%></style>
     <meta charset="UTF-8">
 </head>
 <body>
+<header>
+    <div class="logout">
+        <a href="<c:url value='/logout' />">LOGOUT</a>
+    </div>
+</header>
 <h3>Товары</h3>
 <!--<a href="<c:url value=""/>"Добавить категорию</a>-->
 <table border="1" width="100%">
@@ -36,8 +42,8 @@
             <td>${product.price}</td>
             <td>${product.isActive}</td>
             <td>${product.getCategories().getName()}</td>
-            <td><a href="<c:url value="/Product/upDate/${product.id}"/>">Редактировать</a></td>>
-            <td><a href="<c:url value="/Product/del/${product.id}"/>">Удалить</a></td>
+            <td><a href="<c:url value="/admin/Product/upDate/${product.id}"/>">Редактировать</a></td>>
+            <td><a href="<c:url value="/admin/Product/del/${product.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
     </table>
@@ -48,7 +54,7 @@
     </c:if>
     <c:if test="${!upDate}">
         <tr>ВВОД НОВОГО ТОВАРА </tr>
-        <c:set var="action" value="/addProduct"/>
+        <c:set var="action" value="/admin/addProduct"/>
     </c:if>
     <form action="${action}" method="post">
         <td><input name="name" type="text" placeholder="НАЗВАНИЕ ТОВАРА"/></td>

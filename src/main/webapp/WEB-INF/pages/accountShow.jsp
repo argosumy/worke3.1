@@ -6,16 +6,21 @@
   Time: 11:20
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>userShow</title>
     <style><%@include file="css/style.css"%></style>
+    <style><%@include file="css/login.css"%></style>
 </head>
 <body>
+<header>
+    <div class="logout">
+        <a href="<c:url value='/logout' />">LOGOUT</a>
+    </div>
+</header>
 <h3>Администраторы</h3>
 <table border="1" width="100%">
-    <th>
         <tr>
             <th>ID</th>
             <th>Имя</th>
@@ -25,7 +30,6 @@
             <th>Пароль</th>
             <th colspan="2"></th>
         </tr>
-    </th>
     <c:forEach var ="account" items="${myUsers}" >
         <tr>
             <td>${account.getId()}</td>
@@ -48,14 +52,16 @@
         <c:set var="action" value="/admin/addUser"/>
     </c:if>
     <form action="${action}" method="post">
-        <td>Автозаполнение</td>>
-        <td><input name="name" type="text"  content="Имя пользователя"/></td>
-        <td><input name="lastName" type="text" maxlength="20"/></td>
-        <td><input name="phone" type="text" maxlength="10"/></td>
-        <td><input name="login" type="text" maxlength=""/></td>
-        <td><input name="password" type="text"/></td>
-        <td><input type="submit" value="ВВЕСТИ"/> </td>
-        <td><input type="reset" value="ОТМЕНИТЬ ВВОД"/></td>
+        <tr>
+            <td>Автозаполнение</td>>
+            <td><input name="name" type="text"/></td>
+            <td><input name="lastName" type="text" maxlength="20"/></td>
+            <td><input name="phone" type="text" maxlength="10"/></td>
+            <td><input name="login" type="text"/></td>
+            <td><input name="password" type="text"/></td>
+            <td><input type="submit" value="ВВЕСТИ"/></td>
+            <td><input type="reset" value="ОТМЕНИТЬ ВВОД"/></td>
+        </tr>
     </form>
 </table>
 <div>

@@ -10,7 +10,7 @@ public class ConstSQLTable {
     public final static String SHOW_CATEGORIES_BY_PARENT = "SELECT * FROM BOOK_CATEGORIES WHERE PARENT_ID = ? AND CATEGORY_ID > 1";
     //PRODUCT_TABLE
     public final static String SHOW_ALL_PRODUCTS = "SELECT * FROM BOOK_PRODUCT";
-    public final static String SHOW_PRODUCTS_BY_CATEGORY_ID = "SELECT * FROM BOOK_PRODUCT WHERE CATEGORY_ID = ?";
+    public final static String SHOW_PRODUCTS_BY_CATEGORY_ID = "SELECT * FROM BOOK_PRODUCT WHERE CATEGORY_ID = ? AND IS_ACTIVE = 1";
     public final static String ADD_PRODUCT = "INSERT INTO BOOK_PRODUCT(name, description, price, is_active, category_id)values (?,?,?,?,?)";
     public final static String DELETE_PRODUCT_ID = "DELETE FROM BOOK_PRODUCT WHERE PRODUCT_ID = ?";
     public final static String SHOW_PRODUCT_ID = "SELECT * FROM BOOK_PRODUCT WHERE PRODUCT_ID = ?";
