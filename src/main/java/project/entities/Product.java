@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product extends Entity implements DaoEntitiesMethod {
+public class Product extends Entity {
     private String description;
     private float price;
     private int isActive;
@@ -35,7 +35,7 @@ public class Product extends Entity implements DaoEntitiesMethod {
         this.isActive = isActive;
         this.categoryId = categoryId;
     }
-
+/*
     @Override
     public void addEntity(Connection con){
         try {
@@ -56,8 +56,8 @@ public class Product extends Entity implements DaoEntitiesMethod {
             System.out.println(e);
         }
     }
-
-    @Override
+*/
+/*
     public void upDateEntity(Connection con,int id) {
 //"UPDATE BOOK_PRODUCT SET NAME = ?,DESCRIPTION = ?,PRICE = ?,IS_ACTIVE = ?,CATEGORY_ID = ? WHERE PRODUCT_ID = ?"
         try {
@@ -75,7 +75,8 @@ public class Product extends Entity implements DaoEntitiesMethod {
         }
     }
 
-    @Override
+ */
+/*
     public void deleteEntity(Connection con,int id) {
         try {
             PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.DELETE_PRODUCT_ID);
@@ -86,8 +87,9 @@ public class Product extends Entity implements DaoEntitiesMethod {
             LOGGER.error("ERROR method delete Entiti in Product",e);
         }
     }
+*/
 
-    @Override
+/*
     public List<Entity> showAllEntity(Connection con) {
         List productList = new ArrayList<Product>();
         Categories category;
@@ -114,6 +116,10 @@ public class Product extends Entity implements DaoEntitiesMethod {
         }
         return productList;
     }
+
+ */
+
+/*
     public List<Product> showEntityByParentId(Connection con,int parentId){
         Product product;
         List productList = new ArrayList<Product>();
@@ -137,7 +143,8 @@ public class Product extends Entity implements DaoEntitiesMethod {
         return productList;
     }
 
-    @Override
+ */
+/*
     public Entity getEntityID(Connection con, int id) {
         Entity product = null;
         try {
@@ -158,7 +165,7 @@ public class Product extends Entity implements DaoEntitiesMethod {
         }
         return product ;
     }
-
+*/
 
 
     public String getDescription() {

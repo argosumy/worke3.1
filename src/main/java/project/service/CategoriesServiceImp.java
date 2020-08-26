@@ -112,8 +112,8 @@ public class CategoriesServiceImp implements EntityService {
     }
 
     @Override
-    public List<Categories> showEntityByParentId(Connection con, int parentID) {
-        List <Categories>categoriesList = new ArrayList();
+    public List<Entity> showEntityByParentId(Connection con, int parentID) {
+        List <Entity> categoriesList = new ArrayList<>();
         try{
             PreparedStatement statement = con.prepareStatement(ConstSQLTable.SHOW_CATEGORIES_BY_PARENT);
             statement.setInt(1,parentID);

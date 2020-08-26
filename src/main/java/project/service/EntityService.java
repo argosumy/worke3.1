@@ -12,5 +12,5 @@ public interface EntityService {
     public void deleteEntity(Connection con,int id);
     public List<Entity> showAllEntity(Connection con);
     public Entity getEntityID(Connection con, int id);
-    public List<Categories> showEntityByParentId(Connection con, int parentID);
+    public List<Entity> showEntityByParentId(Connection con, int parentID);
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import project.service.ProductServiceImp;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -19,21 +20,36 @@ import java.util.List;
 public class ControllerProduct {
     Product product;
     private final DaoConnection con;
+    private ProductServiceImp productService;
 
     @Autowired
-    public ControllerProduct(DaoConnection con) {
+    public ControllerProduct(DaoConnection con, ProductServiceImp productService) {
+
         this.con = con;
+        this.productService = productService;
     }
 
     @GetMapping("/admin/productShow")
     public String getProductShow(Model model) {
         Connection connection = con.connect();
-        product = new Product();
-        List<Entity> productsList = product.showAllEntity(connection);
+       //product = new Product();
+        List<Entity> productsList = productService.showAllEntity(connection);
         model.addAttribute("products", productsList);
         con.disconnect();
         return "productsShow";
     }
+
+    /**
+     * Метод добавления сущностей в таблицу BOOK_PRODUCT
+     * Приходят из формы "productsShow.jsp"
+     * @param name название
+     * @param description описание продукта
+     * @param price стоимость
+     * @param isActive маркер:активная позиция - "1",не активная - "0" (не активные позиции не отображаются в просмотре)
+     * @param categoryId
+     * @param model
+     * @return возвращает "productList" текущий список продуктов с учетом добавленного
+     */
     @PostMapping("/admin/addProduct")
     public String addCategories(@RequestParam(value = "name")String name,
                                 @RequestParam(value = "description",defaultValue = "")String description,
@@ -42,16 +58,24 @@ public class ControllerProduct {
                                 @RequestParam(value = "categoryId",defaultValue = "1")int categoryId,
                                 Model model){
         product = new Product(name,description,price,isActive,categoryId);
-        System.out.println(product.toString());
+        productService.setProduct(product);
         Connection connection = con.connect();
-        product.addEntity(connection);
-        List<Entity> productsList = product.showAllEntity(connection);
+        productService.addEntity(connection);
+        List<Entity> productsList = productService.showAllEntity(connection);
         con.disconnect();
-        System.out.println("СПИСОК " + productsList.toString());
         model.addAttribute("products",productsList);
         return "productsShow";
     }
 
+    /** - Метод удаления сущности Product в таблице BOOK_PRODUCT.
+     *  - Достает запись из базы данных для редактирования и отправляет
+     * на страницу "productsShow.jsp" с параметром  ("upDate", true)
+     * для подготовки формы на редактирование.
+     * @param id
+     * @param action
+     * @param model
+     * @return
+     */
     @GetMapping("/admin/Product/{action}/{id}")
     public String delProduct(@PathVariable(value= "id") int id,
                              @PathVariable(value = "action") String action,
@@ -60,12 +84,12 @@ public class ControllerProduct {
         product = new Product();
         List<Entity> productsList = new ArrayList<>();
         if(action.equals("del")){
-            product.deleteEntity(connection,id);
-            productsList = product.showAllEntity(connection);
+            productService.deleteEntity(connection,id);
+            productsList = productService.showAllEntity(connection);
             model.addAttribute("products",productsList);
         }
         if(action.equals("upDate")){
-            product = (Product) product.getEntityID(connection,id);
+            product = (Product) productService.getEntityID(connection,id);
             productsList.add(product);
             model.addAttribute("products",productsList);
             model.addAttribute("upDate", true);
@@ -74,6 +98,18 @@ public class ControllerProduct {
         return "productsShow";
     }
 
+    /**
+     * Метод получает данные из формы "productsShow.jsp" и вносит изменения по ID в
+     * таблице BOOK_PRODUCT
+     * @param id
+     * @param name
+     * @param description
+     * @param price
+     * @param is_active
+     * @param categoryId
+     * @param model
+     * @return
+     */
     @PostMapping("/admin/productUpDate/{id}")
     public String upDateProduct(@PathVariable(value = "id")int id,
                                 @RequestParam(value = "name",defaultValue = "")String name,
@@ -86,7 +122,7 @@ public class ControllerProduct {
         product = new Product();
         Product productUpDate = new Product();
         Connection connection = con.connect();
-        product  = (Product) product.getEntityID(connection,id);
+        product  = (Product) productService.getEntityID(connection,id);
         if (name.equals("")){
             productUpDate.setName(product.getName());
         }
@@ -117,9 +153,10 @@ public class ControllerProduct {
         else {
             productUpDate.setCategoryId(categoryId);
         }
-        productUpDate.upDateEntity(connection,id);
+        productService.setProduct(productUpDate);
+        productService.upDateEntity(connection,id);
 
-        List<Entity> rezult = product.showAllEntity(connection);
+        List<Entity> rezult = productService.showAllEntity(connection);
         model.addAttribute("products",rezult);
         con.disconnect();
         return "productsShow";

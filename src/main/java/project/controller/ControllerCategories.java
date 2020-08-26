@@ -46,7 +46,7 @@ public class ControllerCategories {
     @PostMapping ("/admin/addCategories")
     public String addCategories(@RequestParam(value = "name")String name,
                                 @RequestParam(value = "description")String description,
-                                @RequestParam(value = "id", defaultValue = "1")int id, Model model){
+                                @RequestParam(value = "parentId", defaultValue = "1")int id, Model model){
         categories = new Categories(name,description,id);
         categoriesService = new CategoriesServiceImp(categories);
         Connection connection = con.connect();
