@@ -2,6 +2,7 @@ package project.entities;
 import project.dao.ConstSQLTable;
 import project.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
+import project.service.CategoriesServiceImp;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public class Product extends Entity implements DaoEntitiesMethod {
     public List<Entity> showAllEntity(Connection con) {
         List productList = new ArrayList<Product>();
         Categories category;
+        CategoriesServiceImp categoriesService = new CategoriesServiceImp();
         try{
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(ConstSQLTable.SHOW_ALL_PRODUCTS);
@@ -102,7 +104,7 @@ public class Product extends Entity implements DaoEntitiesMethod {
                 int categoryId = resultSet.getInt("CATEGORY_ID");
                 Product product = new Product(id,name,description,price,isActive,categoryId);
                 category = new Categories();
-                category =(Categories) category.getEntityID(con,categoryId);
+                category =(Categories) categoriesService.getEntityID(con,categoryId);
                 product.setCategories(category);
                 productList.add(product);
             }

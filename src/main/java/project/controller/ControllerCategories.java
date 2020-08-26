@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.service.CategoriesServiceImp;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,19 +16,20 @@ import java.util.List;
 @Controller
 public class ControllerCategories {
     private Categories categories;
+    private CategoriesServiceImp categoriesService;
     private final DaoConnection con;
 
 
     @Autowired
-    public ControllerCategories(DaoConnection con) {
+    public ControllerCategories(DaoConnection con, CategoriesServiceImp categoriesService) {
         this.con = con;
+        this.categoriesService = categoriesService;
     }
 
     @GetMapping("/admin/categoryShow")
     public String getCategoriesShow(Model model){
         Connection connection = con.connect();
-        categories = new Categories();
-        List<Entity> categoriesList = categories.showAllEntity(connection);
+        List<Entity> categoriesList = categoriesService.showAllEntity(connection);
         model.addAttribute("categories",categoriesList);
         con.disconnect();
         return "categoryShow";
@@ -46,9 +48,10 @@ public class ControllerCategories {
                                 @RequestParam(value = "description")String description,
                                 @RequestParam(value = "id", defaultValue = "1")int id, Model model){
         categories = new Categories(name,description,id);
+        categoriesService = new CategoriesServiceImp(categories);
         Connection connection = con.connect();
-        categories.addEntity(connection);
-        List<Entity> categoriesList = categories.showAllEntity(connection);
+        categoriesService.addEntity(connection);
+        List<Entity> categoriesList = categoriesService.showAllEntity(connection);
         con.disconnect();
         model.addAttribute("categories",categoriesList);
         return "categoryShow";
@@ -65,12 +68,12 @@ public class ControllerCategories {
         categories = new Categories();
         List<Entity> categoriesList = new ArrayList<>();
         if(action.equals("del")){
-            categories.deleteEntity(connection,id);
-            categoriesList = categories.showAllEntity(connection);
+            categoriesService.deleteEntity(connection,id);
+            categoriesList = categoriesService.showAllEntity(connection);
             model.addAttribute("categories",categoriesList);
         }
         if(action.equals("upDate")){
-            categories = (Categories) categories.getEntityID(connection,id);
+            categories = (Categories) categoriesService.getEntityID(connection,id);
             categoriesList.add(categories);
             model.addAttribute("categories",categoriesList);
             model.addAttribute("upDate", true);
@@ -90,7 +93,7 @@ public class ControllerCategories {
         categories = new Categories();
         Categories categoriesUpDate = new Categories();
         Connection connection = con.connect();
-        categories  = (Categories) categories.getEntityID(connection,id);
+        categories  = (Categories) categoriesService.getEntityID(connection,id);
         if (name.equals("")){
             categoriesUpDate.setName(categories.getName());
         }
@@ -109,9 +112,11 @@ public class ControllerCategories {
         else {
             categoriesUpDate.setParentId(parentId);
         }
-        categoriesUpDate.upDateEntity(connection,id);
+        categoriesService.setCategory(categoriesUpDate);
+        categoriesService.upDateEntity(connection,id);
+      //  categoriesUpDate.upDateEntity(connection,id);
 
-        List<Entity> res = categories.showAllEntity(connection);
+        List<Entity> res = categoriesService.showAllEntity(connection);
         model.addAttribute("categories",res);
         con.disconnect();
         return "categoryShow";

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import project.service.CategoriesServiceImp;
 
 import java.sql.Connection;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @Controller
 public class ControllerBook {
     private Categories categories;
+    private CategoriesServiceImp categoriesService;
     private Product product;
     private final DaoConnection con;
 
@@ -30,13 +32,13 @@ public class ControllerBook {
         Connection connection = con.connect();
         List<Categories> categoriesList = null;
         List<Product> productList = null;
-        categories = new Categories();
+        categoriesService = new CategoriesServiceImp();
         product = new Product();
-        categoriesList = categories.showEntityByParentId(connection,idCategory);
+        categoriesList = categoriesService.showEntityByParentId(connection,idCategory);
         productList = product.showEntityByParentId(connection,idCategory);
         model.addAttribute("categories",categoriesList);
         model.addAttribute("products",productList);
-        model.addAttribute("category", categories.getEntityID(connection,idCategory));
+        model.addAttribute("category", categoriesService.getEntityID(connection,idCategory));
         con.disconnect();
         return "bookShow";
     }

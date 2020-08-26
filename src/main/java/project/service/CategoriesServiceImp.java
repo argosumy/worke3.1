@@ -1,44 +1,34 @@
-package project.entities;
+package project.service;
 
-import project.dao.ConstSQLTable;
-import project.dao.DaoEntitiesMethod;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import project.dao.ConstSQLTable;
+import project.entities.Categories;
+import project.entities.Entity;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class Categories extends Entity {
-    public String description;
-    public int parentId;
-    private static final Logger LOGGER = Logger.getLogger(Categories.class);
+@Service
+public class CategoriesServiceImp implements EntityService {
+    private Categories category;
+    private static final Logger LOGGER = Logger.getLogger(CategoriesServiceImp.class);
 
-
-
-    public Categories() {
-        super();
+    public CategoriesServiceImp() {
     }
 
-    public Categories(String name, String description, int parentId) {
-        super(name);
-        this.description = description;
-        this.parentId = parentId;
+    public CategoriesServiceImp(Categories category) {
+        this.category = category;
     }
-    public Categories(int id, String name, String description, int parentId) {
-        super(id,name);
-        this.description = description;
-        this.parentId = parentId;
-    }
-/*
+
     @Override
-    public void addEntity(Connection connection)  {
+    public void addEntity(Connection connection) {
         try {
             PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.ADD_CATEGORIES);
-            prStatement.setString(1,this.getName());
-            prStatement.setString(2,description);
-            prStatement.setInt(3,parentId);
+            prStatement.setString(1,category.getName());
+            prStatement.setString(2,category.getDescription());
+            prStatement.setInt(3,category.getParentId());
             prStatement.executeUpdate();
 
         }
@@ -50,17 +40,16 @@ public class Categories extends Entity {
             LOGGER.error("ERROR method insert Entiti in Categories",e);
             System.out.println(e);
         }
-
     }
-*/
-/*
-    public void upDateEntity(Connection con,int id) {
+
+    @Override
+    public void upDateEntity(Connection con, int id) {
         //"UPDATE BOOK_CATEGORIES SET NAME = ?,DESCRIPTION = ?,PARENT_ID = ? WHERE CATEGORY_ID = ?"
         try {
             PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.UPDATE_CATEGORY_ID);
-            prStatement.setString(1,this.getName());
-            prStatement.setString(2,this.getDescription());
-            prStatement.setInt(3,this.getParentId());
+            prStatement.setString(1,category.getName());
+            prStatement.setString(2,category.getDescription());
+            prStatement.setInt(3,category.getParentId());
             prStatement.setInt(4,id);
             prStatement.executeUpdate();
         }
@@ -69,9 +58,8 @@ public class Categories extends Entity {
         }
     }
 
- */
-/*
-    public void deleteEntity(Connection con,int id) {
+    @Override
+    public void deleteEntity(Connection con, int id) {
         try {
             PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.DELETE_CATEGORIES_ID);
             prStatement.setInt(1,id);
@@ -82,8 +70,7 @@ public class Categories extends Entity {
         }
     }
 
- */
-/*
+    @Override
     public List<Entity> showAllEntity(Connection con) {
         List categoriesList = new ArrayList<Categories>();
         try{
@@ -103,10 +90,9 @@ public class Categories extends Entity {
         }
         return categoriesList;
     }
-*/
-/*
-    public Entity getEntityID(Connection con, int id) {
 
+    @Override
+    public Entity getEntityID(Connection con, int id) {
         Entity category = null;
         try {
             PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.SHOW_CATEGORIES_ID);
@@ -125,8 +111,7 @@ public class Categories extends Entity {
         return category ;
     }
 
-*/
-/*
+    @Override
     public List<Categories> showEntityByParentId(Connection con, int parentID) {
         List <Categories>categoriesList = new ArrayList();
         try{
@@ -147,25 +132,12 @@ public class Categories extends Entity {
         }
         return categoriesList;
     }
-*/
-    public String getDescription() {
-        return description;
+
+    public Categories getCategory() {
+        return category;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + " " + this.description + " " + this.parentId;
+    public void setCategory(Categories category) {
+        this.category = category;
     }
 }
