@@ -1,7 +1,6 @@
 package project.controller;
 
 import project.dao.DaoConnection;
-import project.entities.Categories;
 import project.entities.Entity;
 import project.entities.Product;
 import org.springframework.ui.Model;
@@ -17,8 +16,6 @@ import java.util.List;
 
 @Controller
 public class ControllerBook {
-    private Categories categories;
-    private CategoriesServiceImp categoriesService;
     private ProductServiceImp productService;
     private Product product;
     private final DaoConnection con;
@@ -35,9 +32,9 @@ public class ControllerBook {
     public String headMain(@PathVariable(value = "idCategory")int idCategory,
                            Model model){
         Connection connection = con.connect();
-        List<Entity> categoriesList = null;
-        List<Entity> productList = null;
-        categoriesService = new CategoriesServiceImp();
+        List<Entity> categoriesList;
+        List<Entity> productList;
+        CategoriesServiceImp categoriesService = new CategoriesServiceImp();
         product = new Product();
         categoriesList = categoriesService.showEntityByParentId(connection,idCategory);
         productList = productService.showEntityByParentId(connection,idCategory);

@@ -33,13 +33,9 @@ public class CategoriesServiceImp implements EntityService {
 
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method insert Entiti in Categories",e);
-            System.out.println(e);
+            LOGGER.error("ERROR method insert Entity in Categories",e);
         }
-        catch (Exception e){
-            LOGGER.error("ERROR method insert Entiti in Categories",e);
-            System.out.println(e);
-        }
+
     }
 
     @Override
@@ -72,7 +68,7 @@ public class CategoriesServiceImp implements EntityService {
 
     @Override
     public List<Entity> showAllEntity(Connection con) {
-        List categoriesList = new ArrayList<Categories>();
+        List<Entity> categoriesList = new ArrayList<>();
         try{
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(ConstSQLTable.SHOW_ALL_CATEGORIES);

@@ -34,13 +34,9 @@ public class ProductServiceImp implements EntityService {
             prStatement.executeUpdate();
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method insert Entiti in ProductService",e);
-            System.out.println(e);
+            LOGGER.error("ERROR method insert Entity in ProductService",e);
         }
-        catch (Exception e){
-            LOGGER.error("ERROR method insert Entiti in ProductService",e);
-            System.out.println(e);
-        }
+
     }
 
     @Override
@@ -57,7 +53,7 @@ public class ProductServiceImp implements EntityService {
             prStatement.executeUpdate();
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method delete Entiti in ProductService",e);
+            LOGGER.error("ERROR method delete Entity in ProductService",e);
         }
 
     }
@@ -70,13 +66,13 @@ public class ProductServiceImp implements EntityService {
             prStatement.executeUpdate();
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method delete Entiti in Product",e);
+            LOGGER.error("ERROR method delete Entity in Product",e);
         }
     }
 
     @Override
     public List<Entity> showAllEntity(Connection con) {
-        List productList = new ArrayList<Product>();
+        List<Entity> productList = new ArrayList<>();
         Categories category;
         CategoriesServiceImp categoriesService = new CategoriesServiceImp();
         try{
@@ -86,11 +82,11 @@ public class ProductServiceImp implements EntityService {
                 int id = resultSet.getInt("PRODUCT_ID");
                 String name = resultSet.getString("NAME");
                 String description = resultSet.getString("DESCRIPTION");
-                Float price = resultSet.getFloat("PRICE");
+                float price = resultSet.getFloat("PRICE");
                 int isActive = resultSet.getInt("IS_ACTIVE");
                 int categoryId = resultSet.getInt("CATEGORY_ID");
                 Product product = new Product(id,name,description,price,isActive,categoryId);
-                category = new Categories();
+                //category = new Categories();
                 category =(Categories) categoriesService.getEntityID(con,categoryId);
                 product.setCategories(category);
                 productList.add(product);
@@ -127,7 +123,7 @@ public class ProductServiceImp implements EntityService {
     @Override
     public List<Entity> showEntityByParentId(Connection con, int parentID) {
         Product product;
-        List productList = new ArrayList<Product>();
+        List <Entity> productList = new ArrayList<>();
         try {
             PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.SHOW_PRODUCTS_BY_CATEGORY_ID);
             prStatement.setInt(1,parentID);

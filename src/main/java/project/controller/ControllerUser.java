@@ -9,30 +9,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import project.dao.DaoConnection;
 import project.entities.Account;
-import project.entities.Categories;
 import project.entities.Entity;
 import project.entities.MyUser;
+import project.service.MyUserServiceImp;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
-public class ControllerUser implements ControllerEntities {
+public class ControllerUser {
     private final DaoConnection con;
-    private MyUser myUser;
+    private MyUserServiceImp myUserService;
 
     @Autowired
-    public ControllerUser(DaoConnection con) {
+    public ControllerUser(DaoConnection con, MyUserServiceImp myUserService) {
+
         this.con = con;
+        this.myUserService = myUserService;
     }
 
-    @Override
     @GetMapping("/admin/userShow")
     public String getEntity(Model model) {
         Connection connection = con.connect();
-        myUser = new MyUser();
-        List<Entity> myUserList = myUser.showAllEntity(connection);
+        List<Entity> myUserList = myUserService.showAllEntity(connection);
         model.addAttribute("myUsers",myUserList);
         con.disconnect();
         return "accountShow";
@@ -46,7 +45,7 @@ public class ControllerUser implements ControllerEntities {
                             @RequestParam(value = "password") String password,
                             Model model) {
         Connection connection = con.connect();
-        myUser = new MyUser();
+        MyUser myUser = new MyUser();
         myUser.setName(name);
         myUser.setLastName(lastName);
         myUser.setPhone(phone);
@@ -54,12 +53,9 @@ public class ControllerUser implements ControllerEntities {
         account.setName(login);
         account.setPassword(password);
         myUser.setAccount(account);
-        try {
-            myUser.addEntity(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        List<Entity> myUserList = myUser.showAllEntity(connection);
+        myUserService.setMyUser(myUser);
+        myUserService.addEntity(connection);
+        List<Entity> myUserList = myUserService.showAllEntity(connection);
         con.disconnect();
         model.addAttribute("myUsers",myUserList);
         return "accountShow";
@@ -71,24 +67,24 @@ public class ControllerUser implements ControllerEntities {
     public String delCategories(@PathVariable(value= "id") int id,
                                 @PathVariable(value = "action") String action,
                                 Model model){
+        MyUser myUser;
         Connection connection = con.connect();
         List<Entity> myUsersList = new ArrayList<>();
         if(id != 1) { //ограничение на удаление первого администратора
-            myUser = new MyUser();
             if (action.equals("del")) {
-                myUser.deleteEntity(connection, id);
-                myUsersList = myUser.showAllEntity(connection);
+                myUserService.deleteEntity(connection, id);
+                myUsersList = myUserService.showAllEntity(connection);
                 model.addAttribute("myUsers", myUsersList);
             }
             if (action.equals("upDate")) {
-                myUser = (MyUser) myUser.getEntityID(connection, id);
+                myUser = (MyUser) myUserService.getEntityID(connection, id);
                 myUsersList.add(myUser);
                 model.addAttribute("myUsers", myUsersList);
                 model.addAttribute("upDate", true);
             }
         }
         else{
-            myUsersList = myUser.showAllEntity(connection);
+            myUsersList = myUserService.showAllEntity(connection);
             model.addAttribute("myUsers", myUsersList);
         }
         con.disconnect();
@@ -103,9 +99,10 @@ public class ControllerUser implements ControllerEntities {
                                  @RequestParam(value = "login", defaultValue = "") String login,
                                  @RequestParam(value = "password", defaultValue = "") String password,
                                  Model model){
+        MyUser myUser;
         MyUser myUserUpDate = new MyUser();
         Connection connection = con.connect();
-        myUser  = (MyUser) myUser.getEntityID(connection,id);
+        myUser  = (MyUser) myUserService.getEntityID(connection,id);
         Account accountUpDate = new Account();
         if (name.equals("")){
             myUserUpDate.setName(myUser.getName());
@@ -136,8 +133,9 @@ public class ControllerUser implements ControllerEntities {
         }
         else accountUpDate.setPassword(password);
         myUserUpDate.setAccount(accountUpDate);
-        myUserUpDate.upDateEntity(connection,id);
-        List<Entity> res = myUser.showAllEntity(connection);
+        myUserService.setMyUser(myUserUpDate);
+        myUserService.upDateEntity(connection,id);
+        List<Entity> res = myUserService.showAllEntity(connection);
         model.addAttribute("myUsers",res);
         con.disconnect();
         return "accountShow";

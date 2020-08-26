@@ -41,7 +41,6 @@ public class ControllerCategories {
      * @param description Описание категории
      * @param id ID родительской категории
      * @param model categories - обновленный список всех категории после добавления новой
-     * @return
      */
     @PostMapping ("/admin/addCategories")
     public String addCategories(@RequestParam(value = "name")String name,

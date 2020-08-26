@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 public class ControllerProduct {
-    Product product;
+    private Product product;
     private final DaoConnection con;
     private ProductServiceImp productService;
 
@@ -46,8 +46,6 @@ public class ControllerProduct {
      * @param description описание продукта
      * @param price стоимость
      * @param isActive маркер:активная позиция - "1",не активная - "0" (не активные позиции не отображаются в просмотре)
-     * @param categoryId
-     * @param model
      * @return возвращает "productList" текущий список продуктов с учетом добавленного
      */
     @PostMapping("/admin/addProduct")
@@ -71,10 +69,6 @@ public class ControllerProduct {
      *  - Достает запись из базы данных для редактирования и отправляет
      * на страницу "productsShow.jsp" с параметром  ("upDate", true)
      * для подготовки формы на редактирование.
-     * @param id
-     * @param action
-     * @param model
-     * @return
      */
     @GetMapping("/admin/Product/{action}/{id}")
     public String delProduct(@PathVariable(value= "id") int id,
@@ -101,14 +95,6 @@ public class ControllerProduct {
     /**
      * Метод получает данные из формы "productsShow.jsp" и вносит изменения по ID в
      * таблице BOOK_PRODUCT
-     * @param id
-     * @param name
-     * @param description
-     * @param price
-     * @param is_active
-     * @param categoryId
-     * @param model
-     * @return
      */
     @PostMapping("/admin/productUpDate/{id}")
     public String upDateProduct(@PathVariable(value = "id")int id,

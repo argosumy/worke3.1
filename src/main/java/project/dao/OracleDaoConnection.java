@@ -63,7 +63,6 @@ public class OracleDaoConnection implements DaoConnection{
     }
 
     @PostConstruct
-    @Override
     public void creatTable() {
         connection = connect();
         int i = 0;
