@@ -24,8 +24,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Account passwordLogin = new Account();
-        List<Entity> users = passwordLogin.showAllEntity(con.connect());
+        AccountServiceImp accountService = new AccountServiceImp();
+        List<Entity> users = accountService.showAllEntity(con.connect());
         Optional<Entity> account = users.stream().filter(u -> u.getName().equals(s)).findAny();
         if(!account.isPresent()){
             throw new UsernameNotFoundException("User not found by name: " + s);
