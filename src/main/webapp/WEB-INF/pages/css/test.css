@@ -1,0 +1,31 @@
+h1{
+margin-left: 40%;
+color:aquamarine ;
+}
+.fon{
+    width: auto;
+    height: 100%;
+    background: #00b0ff;
+    position: fixed;
+    left: 5%;
+    top: 0;
+    padding-top:10px;
+    padding-right:10px;
+}
+ul li a{
+    color: white;
+    font-size:150%;
+    text-decoration: none;
+}
+ul li{
+    color: white;
+}
+header{
+    width: auto;
+    border: 4px double  aquamarine;
+    margin: 2% 5% 0% 25%;
+    padding : 10px;
+}
+header a {
+
+}

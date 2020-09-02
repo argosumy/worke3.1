@@ -1,83 +1,31 @@
-header {
-    height: 45px;
-    background: #A4D3E0;
-    margin-right: 100%;
-}
-body{
-    margin: 0;
-    min-width:600px;
-}
 
-li{
-    font-size: 15px;
-}
 h1{
-    margin-left: 25%;
-    color: lightseagreen;
+    color: #54D5FF;
 }
-ul{
-    border: 3px solid #00b0ff;
-    width: 200px;
-    margin: auto;
-    margin-left: 50px;
-}
-
-.btn{
-    margin-left: 40%;
-    margin-bottom: 10px;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 5px;
-    border-radius: 5px;
-    color:  #36454A;
-    background: -webkit-linear-gradient(top, #A4D3E0 , #A4D3E0 50%, #CBE3EB 50%);
-    background: -o-linear-gradient(top, #A4D3E0 , #A4D3E0 50%, #CBE3EB 50%);
-    background: linear-gradient(to top, #A4D3E0 , #A4D3E0 50%, #CBE3EB 50%);
-    box-shadow: 2px 2px 3px black;
-}
-.description{
-    background: white;
-    border: 3px solid #00b0ff;
-    margin-left: 15mm;
-    margin-right: 15mm;
-    padding: 10px;
-    box-sizing: content-box;
-}
-.d {
-    background: white;
-    border-style: double;
-    border-width: 4px;
-    border-color: aqua;
-    padding: 5px;
-    text-align: center;
-    margin-left: 25%;
-    margin-right: 50%;
-    margin-bottom: 5px;
-}
-.category{
-    background: white;
-    border: 3px solid #00b0ff;
-    margin-left: 5%;
-    padding: 3px;
-}
-
-.menu-main{
-    height: 100%;
-    width: 18%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #00b0ff;
-    overflow-x: hidden;
-    padding-top: 20px;
-}
-
-.menu-main a{
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: white;
+nav {
     display: block;
+    width: auto;
+    margin: 0 auto 30px;
 }
-
+nav ul {
+    margin: 0;
+    list-style: none;
+    padding: 1em 0;
+    background: #b7c2ec;
+}
+.one ul {
+    padding: 1em 0;
+    background: #c5daec;
+}
+.one a {
+    padding: 1em;
+    background: rgba(51, 177, 172, 0.37);
+    border-right: 1px solid #6f95b1;
+    color: whitesmoke;
+    text-decoration: none;
+    font-size: large;
+    font-family: Georgia, cursive, monospace ;
+}
+nav li {
+    display: inline-block; /*один из способов разместить элементы в строку*/
+}

@@ -6,14 +6,37 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Book</title>
     <style><%@include file="css/style.css"%></style>
+    <%--<style><%@include file="css/test.css"%></style>--%>
     <meta charset="UTF-8">
 </head>
 <body>
+<header>
+    <div class="header-top">
+        <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+        <%String authentication = SecurityContextHolder.getContext().getAuthentication().getName();%>
+        <div class="logout">
+            <%if(authentication.equals("anonymousUser")){%>
+                <a href="<c:url value='/login' />">LOGIN</a>
+            <%} else {%>
+                <a href="<c:url value='/logout' />">LOGOUT login - <%=authentication%></a>
+            <%}%>
+        </div >
+        <div>
+            <nav class="one">
+                <ul>
+                    <li><a  href=/admin/categoryShow>Работа с категориями</a></li>
+                    <li><a  href=/admin/productShow>Работа с товарами</a></li>
+                    <li><a  href=/admin/userShow>Работа с администраторами</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
 
 <h1>BOOK Dietary supplement</h1>
 <c:if test="${category.id > 1}">

@@ -28,7 +28,7 @@ public class OracleDaoConnection implements DaoConnection{
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
     private final DataSourseMy dataSourseMy;
-    public DataSource dataSource;
+    private DataSource dataSource;
 
 
     @Autowired
@@ -62,6 +62,12 @@ public class OracleDaoConnection implements DaoConnection{
         return connection;
     }
 
+    /**
+     * Метод создает все таблицы при первом запуске приложения.
+     * префикс "BOOK_*"
+     *
+     */
+    @Override
     @PostConstruct
     public void creatTable() {
         connection = connect();
@@ -92,7 +98,7 @@ public class OracleDaoConnection implements DaoConnection{
                 scriptRunner.setSendFullScript(false);
                 scriptRunner.runScript(new BufferedReader(new FileReader(creatTables)));*/
             }catch (Exception e){
-                System.out.println(e);
+                LOGGER.error(e);
             }
         }
     }
@@ -117,7 +123,7 @@ public class OracleDaoConnection implements DaoConnection{
             }
             if(preparedStatement != null){
                 preparedStatement.close();
-                System.out.println("PrepareStatment was closed");
+                System.out.println("PrepareStatement was closed");
             }
         } catch (SQLException e) {
             LOGGER.error(e);
