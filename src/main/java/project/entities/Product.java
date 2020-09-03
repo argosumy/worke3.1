@@ -1,4 +1,4 @@
-package project.entities;
+package main.java.project.entities;
 
 public class Product extends Entity {
     private String description;

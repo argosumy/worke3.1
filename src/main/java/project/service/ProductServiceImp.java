@@ -1,11 +1,11 @@
-package project.service;
+package main.java.project.service;
 
+import main.java.project.entities.Categories;
+import main.java.project.entities.Entity;
+import main.java.project.entities.Product;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import project.dao.ConstSQLTable;
-import project.entities.Categories;
-import project.entities.Entity;
-import project.entities.Product;
+import main.java.project.dao.ConstSQLTable;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -55,7 +55,6 @@ public class ProductServiceImp implements EntityService {
         catch (SQLException e){
             LOGGER.error("ERROR method delete Entity in ProductService",e);
         }
-
     }
 
     @Override
@@ -72,62 +71,41 @@ public class ProductServiceImp implements EntityService {
 
     @Override
     public List<Entity> showAllEntity(Connection con) {
-        List<Entity> productList = new ArrayList<>();
-        Categories category;
-        CategoriesServiceImp categoriesService = new CategoriesServiceImp();
-        try{
-            Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery(ConstSQLTable.SHOW_ALL_PRODUCTS);
-            while (resultSet.next()){
-                int id = resultSet.getInt("PRODUCT_ID");
-                String name = resultSet.getString("NAME");
-                String description = resultSet.getString("DESCRIPTION");
-                float price = resultSet.getFloat("PRICE");
-                int isActive = resultSet.getInt("IS_ACTIVE");
-                int categoryId = resultSet.getInt("CATEGORY_ID");
-                Product product = new Product(id,name,description,price,isActive,categoryId);
-                //category = new Categories();
-                category =(Categories) categoriesService.getEntityID(con,categoryId);
-                product.setCategories(category);
-                productList.add(product);
-            }
-        }
-        catch (SQLException e){
-            LOGGER.error("ERROR method showAllEntity in Product",e);
-        }
-        return productList;
+        return entityList(ConstSQLTable.SHOW_ALL_PRODUCTS,-1,con);
     }
 
     @Override
     public Entity getEntityID(Connection con, int id) {
-        Entity product = null;
-        try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.SHOW_PRODUCT_ID);
-            prStatement.setInt(1,id);
-            ResultSet resultSet = prStatement.executeQuery();
-            resultSet.next();
-            int idProduct = resultSet.getInt("PRODUCT_ID");
-            String name = resultSet.getString("NAME");
-            String description = resultSet.getString("DESCRIPTION");
-            float price = resultSet.getFloat("PRICE");
-            int isActive = resultSet.getInt("IS_ACTIVE");
-            int categoryId = resultSet.getInt("CATEGORY_ID");
-            product = new Product(idProduct,name,description,price,isActive,categoryId);
-        }
-        catch (SQLException e){
-            LOGGER.error("ERROR method showEntityID in ProductsService",e);
-        }
-        return product ;
+       return entityList(ConstSQLTable.SHOW_PRODUCT_ID,id,con).get(0);
     }
 
     @Override
     public List<Entity> showEntityByParentId(Connection con, int parentID) {
-        Product product;
+        return entityList(ConstSQLTable.SHOW_PRODUCTS_BY_CATEGORY_ID,parentID,con);
+    }
+
+    /**
+     * Метод создает спиок Product
+     * @param sql запрос SQL
+     * @param id (параметр для  PreparedStatement)
+     * @param con (Connection)
+     */
+    @Override
+    public List<Entity> entityList(String sql, int id, Connection con){
         List <Entity> productList = new ArrayList<>();
+        Product product;
+        Categories category;
+        CategoriesServiceImp categoriesService = new CategoriesServiceImp();
+        ResultSet resultSet;
         try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.SHOW_PRODUCTS_BY_CATEGORY_ID);
-            prStatement.setInt(1,parentID);
-            ResultSet resultSet = prStatement.executeQuery();
+            if(id != -1){
+                PreparedStatement prStatement = con.prepareStatement(sql);
+                prStatement.setInt(1,id);
+                resultSet = prStatement.executeQuery();}
+            else{
+                Statement statement = con.createStatement();
+                resultSet = statement.executeQuery(sql);
+            }
             while (resultSet.next()){
                 int idProduct = resultSet.getInt("PRODUCT_ID");
                 String name = resultSet.getString("NAME");
@@ -136,10 +114,12 @@ public class ProductServiceImp implements EntityService {
                 int isActive = resultSet.getInt("IS_ACTIVE");
                 int categoryId = resultSet.getInt("CATEGORY_ID");
                 product = new Product(idProduct,name,description,price,isActive,categoryId);
+                category =(Categories) categoriesService.getEntityID(con,categoryId);
+                product.setCategories(category);
                 productList.add(product);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         }
         return productList;
     }

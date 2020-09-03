@@ -1,4 +1,4 @@
-package project.dao;
+package main.java.project.dao;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

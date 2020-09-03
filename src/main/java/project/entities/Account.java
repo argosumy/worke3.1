@@ -1,4 +1,4 @@
-package project.entities;
+package main.java.project.entities;
 
 public class Account extends Entity  {
     private String password;

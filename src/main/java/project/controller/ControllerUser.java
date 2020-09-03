@@ -1,4 +1,4 @@
-package project.controller;
+package main.java.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import project.dao.DaoConnection;
-import project.entities.Account;
-import project.entities.Entity;
-import project.entities.MyUser;
-import project.service.MyUserServiceImp;
+import main.java.project.dao.DaoConnection;
+import main.java.project.entities.Account;
+import main.java.project.entities.Entity;
+import main.java.project.entities.MyUser;
+import main.java.project.service.MyUserServiceImp;
 
 import java.sql.Connection;
 import java.util.ArrayList;

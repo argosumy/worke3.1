@@ -1,6 +1,6 @@
-package project.service;
+package main.java.project.service;
 
-import project.entities.Entity;
+import main.java.project.entities.Entity;
 
 import java.sql.Connection;
 import java.util.List;
@@ -12,4 +12,5 @@ public interface EntityService {
     List<Entity> showAllEntity(Connection con);
     Entity getEntityID(Connection con, int id);
     List<Entity> showEntityByParentId(Connection con, int parentID);
+    List<Entity> entityList(String sql, int id, Connection con);
 }

@@ -1,9 +1,9 @@
-package project.service;
+package main.java.project.service;
 
+import main.java.project.entities.Account;
+import main.java.project.entities.Entity;
 import org.apache.log4j.Logger;
-import project.dao.ConstSQLTable;
-import project.entities.Account;
-import project.entities.Entity;
+import main.java.project.dao.ConstSQLTable;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -76,5 +76,10 @@ public class AccountServiceImp implements EntityService {
             LOGGER.error("ERROR method showEntityID in AccountServiceImp",e);
         }
         return account;
+    }
+
+    @Override
+    public List<Entity> entityList(String sql, int id, Connection con) {
+        return null;
     }
 }

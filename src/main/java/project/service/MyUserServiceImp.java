@@ -1,11 +1,11 @@
-package project.service;
+package main.java.project.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import project.dao.ConstSQLTable;
-import project.entities.Account;
-import project.entities.Entity;
-import project.entities.MyUser;
+import main.java.project.dao.ConstSQLTable;
+import main.java.project.entities.Account;
+import main.java.project.entities.Entity;
+import main.java.project.entities.MyUser;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -82,10 +82,29 @@ public class MyUserServiceImp implements EntityService {
 
     @Override
     public List<Entity> showAllEntity(Connection con) {
+        return entityList(ConstSQLTable.SHOW_ALL_ACCOUNTS,-1,con);
+    }
+
+    @Override
+    public Entity getEntityID(Connection con, int id) {
+        return entityList(ConstSQLTable.SHOW_ACCOUNTS_BY_ID,id,con).get(0);
+    }
+
+    @Override
+    public List<Entity> entityList(String sql, int id, Connection con) {
         List<Entity>userList = new ArrayList<>();
-        try{
+        ResultSet resultSet;
+        MyUser user;
+        try {
+        if(id < 0){
             Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery(ConstSQLTable.SHOW_ALL_ACCOUNTS);
+            resultSet = statement.executeQuery(sql);
+        }
+        else {
+            PreparedStatement preparedStatement =con.prepareStatement(sql);
+            preparedStatement.setInt(1,id);
+            resultSet = preparedStatement.executeQuery();
+        }
             while (resultSet.next()){
                 int userId = resultSet.getInt(1);
                 String name = resultSet.getString("NAME");
@@ -95,39 +114,13 @@ public class MyUserServiceImp implements EntityService {
                 String password = resultSet.getString("PASSWORD");
                 String role = resultSet.getString("ROLE");
                 Account account = new Account(login,password,userId);
-                MyUser user = new MyUser(userId,name,lastName,phone,account);
+                user = new MyUser(userId,name,lastName,phone,account);
                 userList.add(user);
             }
-        }
-        catch (SQLException e){
-            LOGGER.error("ERROR method showAllEntity in MyUser",e);
-        }
-        return userList;
-    }
-
-    @Override
-    public Entity getEntityID(Connection con, int id) {
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        MyUser user = null;
-        try {
-            preparedStatement = con.prepareStatement(ConstSQLTable.SHOW_ACCOUNTS_BY_ID);
-            preparedStatement.setInt(1,id);
-            resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            int userId = resultSet.getInt(1);
-            String name = resultSet.getString("NAME");
-            String lastName = resultSet.getString("LAST_NAME");
-            String phone = resultSet.getString("PHONE");
-            String login = resultSet.getString("LOGIN");
-            String password = resultSet.getString("PASSWORD");
-            String role = resultSet.getString("ROLE");
-            Account account = new Account(login,password,userId);
-            user = new MyUser(userId,name,lastName,phone,account);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user;
+        return userList;
     }
 
     @Override

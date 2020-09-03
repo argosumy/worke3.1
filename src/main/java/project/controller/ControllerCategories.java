@@ -1,13 +1,13 @@
-package project.controller;
+package main.java.project.controller;
 
-import project.dao.DaoConnection;
-import project.entities.Categories;
-import project.entities.Entity;
+import main.java.project.dao.DaoConnection;
+import main.java.project.entities.Categories;
+import main.java.project.entities.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import project.service.CategoriesServiceImp;
+import main.java.project.service.CategoriesServiceImp;
 
 import java.sql.Connection;
 import java.util.ArrayList;

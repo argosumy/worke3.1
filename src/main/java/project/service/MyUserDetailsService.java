@@ -1,4 +1,4 @@
-package project.service;
+package main.java.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import project.dao.DaoConnection;
-import project.entities.Entity;
-import project.entities.Account;
+import main.java.project.dao.DaoConnection;
+import main.java.project.entities.Entity;
+import main.java.project.entities.Account;
 import java.util.List;
 import java.util.Optional;
 
