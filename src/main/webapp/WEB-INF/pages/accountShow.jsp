@@ -27,9 +27,9 @@
         <div>
             <nav class="one">
                 <ul>
-                    <li><a  href=/admin/categoryShow>Работа с категориями</a></li>
-                    <li><a  href=/admin/productShow>Работа с товарами</a></li>
-                    <li><a  href=/admin/userShow>Работа с администраторами</a></li>
+                    <li><a  href=<c:url value="/admin/category/categoryShow"/>>Работа с категориями</a></li>
+                    <li><a  href=<c:url value="/admin/product/productShow"/>>Работа с товарами</a></li>
+                    <li><a  href=<c:url value="/admin/user/userShow"/>>Работа с администраторами</a></li>
                 </ul>
             </nav>
         </div>
@@ -54,18 +54,18 @@
             <td>${account.getPhone()}</td>
             <td>${account.getAccount().getName()}</td>
             <td>${account.getAccount().getPassword()}</td>
-            <td><a href="<c:url value="/admin/User/upDate/${account.getId()}"/>">Редактировать</a></td>>
-            <td><a href="<c:url value="/admin/User/del/${account.getId()}"/>">Удалить</a></td>
+            <td><a href="<c:url value="/admin/user/upDate/${account.getId()}"/>">Редактировать</a></td>>
+            <td><a href="<c:url value="/admin/user/del/${account.getId()}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
 
     <c:if test="${upDate}">
         <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ АДМИНИСТРАТОРА</tr>
-        <c:set var="action" value="/admin/updateUser/${myUsers[0].id}"/>
+        <c:set var="action" value="/admin/user/updateUser/${myUsers[0].id}"/>
     </c:if>
     <c:if test="${!upDate}">
         <tr>ВВОД НОВОГО АДМИНИСТРАТОРА</tr>
-        <c:set var="action" value="/admin/addUser"/>
+        <c:set var="action" value="/admin/user/addUser"/>
     </c:if>
     <form action="${action}" method="post">
         <tr>

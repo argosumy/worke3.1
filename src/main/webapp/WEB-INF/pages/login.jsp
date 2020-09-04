@@ -24,7 +24,7 @@
     <div class="centr eror">Неверный логин или пароль!</div>
     </c:if>
     <div class="centr">
-        <form action='/login' method="post">
+        <form action='<c:url value="/login"/>' method="post">
             <div>
                 <label for="username">Логин</label>
                 <input class="size" type="text" id="username" name="username" >

@@ -108,22 +108,17 @@ public class OracleDaoConnection implements DaoConnection{
         try {
             if(connection != null){
                 connection.close();
-                System.out.println("Connection was closed");
             }
             else {
-                System.out.println("Connection was closed");
             }
             if (resultSet != null) {
                 resultSet.close();
-                System.out.println("Resultset was closed");
             }
             if(statement != null) {
                 statement.close();
-                System.out.println("Statement was closed");
             }
             if(preparedStatement != null){
                 preparedStatement.close();
-                System.out.println("PrepareStatement was closed");
             }
         } catch (SQLException e) {
             LOGGER.error(e);

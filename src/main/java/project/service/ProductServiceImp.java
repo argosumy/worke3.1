@@ -16,8 +16,8 @@ import java.util.List;
 public class ProductServiceImp implements EntityService {
     private Product product;
     private static final Logger LOGGER = Logger.getLogger(ProductServiceImp.class);
-    private DaoConnection con;
-    private CategoriesServiceImp categoriesService;
+    private final DaoConnection con;
+    private final CategoriesServiceImp categoriesService;
 
     @Autowired
     public ProductServiceImp(DaoConnection con, CategoriesServiceImp categoriesService) {
@@ -25,9 +25,6 @@ public class ProductServiceImp implements EntityService {
         this.categoriesService = categoriesService;
     }
 
-    public ProductServiceImp(Product product) {
-        this.product = product;
-    }
 
     @Override
     public void addEntity() {

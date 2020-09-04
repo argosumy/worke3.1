@@ -15,7 +15,7 @@ import java.util.List;
 public class AccountServiceImp {
     private static final Logger LOGGER = Logger.getLogger(AccountServiceImp.class);
     private Account account;
-    private DaoConnection con;
+    private final DaoConnection con;
 
     @Autowired
     public AccountServiceImp(DaoConnection con) {

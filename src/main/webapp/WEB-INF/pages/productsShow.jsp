@@ -28,9 +28,9 @@
         <div>
             <nav class="one">
                 <ul>
-                    <li><a  href=/admin/categoryShow>Работа с категориями</a></li>
-                    <li><a  href=/admin/productShow>Работа с товарами</a></li>
-                    <li><a  href=/admin/userShow>Работа с администраторами</a></li>
+                    <li><a  href=<c:url value="/admin/category/categoryShow"/>>Работа с категориями</a></li>
+                    <li><a  href=<c:url value="/admin/product/productShow"/>>Работа с товарами</a></li>
+                    <li><a  href=<c:url value="/admin/user/userShow"/>>Работа с администраторами</a></li>
                 </ul>
             </nav>
         </div>
@@ -58,19 +58,19 @@
             <td>${product.price}</td>
             <td>${product.isActive}</td>
             <td>${product.getCategories().getName()}</td>
-            <td><a href="<c:url value="/admin/Product/upDate/${product.id}"/>">Редактировать</a></td>>
-            <td><a href="<c:url value="/admin/Product/del/${product.id}"/>">Удалить</a></td>
+            <td><a href="<c:url value="/admin/product/upDate/${product.id}"/>">Редактировать</a></td>>
+            <td><a href="<c:url value="/admin/product/del/${product.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
     </table>
 <table border="1" width="100%">
     <c:if test="${upDate}">
         <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ ТОВАРА</tr>
-        <c:set var="action" value="/admin/productUpDate/${products[0].id}"/>
+        <c:set var="action" value="/admin/product/productUpDate/${products[0].id}"/>
     </c:if>
     <c:if test="${!upDate}">
         <tr>ВВОД НОВОГО ТОВАРА </tr>
-        <c:set var="action" value="/admin/addProduct"/>
+        <c:set var="action" value="/admin/product/addProduct"/>
     </c:if>
     <form action="${action}" method="post">
         <td><input name="name" type="text" placeholder="НАЗВАНИЕ ТОВАРА"/></td>

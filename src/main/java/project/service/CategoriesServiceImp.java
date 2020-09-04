@@ -16,15 +16,13 @@ import java.util.List;
 public class CategoriesServiceImp implements EntityService {
     private Categories category;
     private static final Logger LOGGER = Logger.getLogger(CategoriesServiceImp.class);
-    private DaoConnection con;
+    private final DaoConnection con;
     @Autowired
     public CategoriesServiceImp(DaoConnection con) {
         this.con = con;
     }
 
-    public CategoriesServiceImp(Categories category) {
-        this.category = category;
-    }
+
 
     @Override
     public void addEntity() {

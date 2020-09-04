@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html xmlns:th="http://www.thymeleaf.org">
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html >
 <head>
     <title>Book</title>
     <style><%@include file="css/style.css"%></style>
@@ -29,9 +29,9 @@
         <div>
             <nav class="one">
                 <ul>
-                    <li><a  href=/admin/categoryShow>Работа с категориями</a></li>
-                    <li><a  href=/admin/productShow>Работа с товарами</a></li>
-                    <li><a  href=/admin/userShow>Работа с администраторами</a></li>
+                    <li><a  href=<c:url value="/admin/categoryShow"/>>Работа с категориями</a></li>
+                    <li><a  href=<c:url value="/admin/product/productShow"/>>Работа с товарами</a></li>
+                    <li><a  href=<c:url value="/admin/user/userShow"/>>Работа с администраторами</a></li>
                 </ul>
             </nav>
         </div>

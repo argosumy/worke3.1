@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    private DaoConnection con;
+    private final DaoConnection con;
 
     @Autowired
     public MyUserDetailsService(DaoConnection con){

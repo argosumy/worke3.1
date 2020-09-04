@@ -24,11 +24,11 @@
     <h1>Справочник биологически активных добавок</h1>
     <div class="fon">
         <ul class="menu-main">
-            <li><a href=/showBook/1>Показать товары</a></li>
+            <li><a href=<c:url value="/showBook/1"/>>Показать товары</a></li>
             <security:authorize access="hasRole('ADMIN')">
-            <li><a href=/admin/categoryShow>Работа с категориями</a></li>
-            <li><a href=/admin/productShow>Работа с товрами</a></li>
-            <li><a href=/admin/userShow>Работа с администраторами</a></li>
+            <li><a href=<c:url value="/admin/category/categoryShow"/>>Работа с категориями</a></li>
+            <li><a href=<c:url value="/admin/product/productShow"/>>Работа с товрами</a></li>
+            <li><a href=<c:url value="/admin/user/userShow"/>>Работа с администраторами</a></li>
             </security:authorize>
         </ul>
     </div>

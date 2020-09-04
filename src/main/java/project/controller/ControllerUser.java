@@ -3,10 +3,7 @@ package main.java.project.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import main.java.project.entities.Account;
 import main.java.project.entities.Entity;
 import main.java.project.entities.MyUser;
@@ -15,8 +12,9 @@ import main.java.project.service.MyUserServiceImp;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
+@RequestMapping(value = "/admin/user")
 public class ControllerUser {
-    private MyUserServiceImp myUserService;
+    private final MyUserServiceImp myUserService;
 
     @Autowired
     public ControllerUser(MyUserServiceImp myUserService) {
@@ -24,14 +22,14 @@ public class ControllerUser {
         this.myUserService = myUserService;
     }
 
-    @GetMapping("/admin/userShow")
+    @RequestMapping("/userShow")
     public String getEntity(Model model) {
         List<Entity> myUserList = myUserService.showAllEntity();
         model.addAttribute("myUsers",myUserList);
         return "accountShow";
     }
 
-    @PostMapping("/admin/addUser")
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public String addEntity(@RequestParam(value = "name") String name,
                             @RequestParam(value = "lastName") String lastName,
                             @RequestParam(value = "phone") String phone,
@@ -55,7 +53,7 @@ public class ControllerUser {
     /**
      *Метод удаления и редактирования администраторов
      */
-    @GetMapping("/admin/User/{action}/{id}")
+    @RequestMapping(value = "/{action}/{id}")
     public String delCategories(@PathVariable(value= "id") int id,
                                 @PathVariable(value = "action") String action,
                                 Model model){
@@ -81,7 +79,7 @@ public class ControllerUser {
         return "accountShow";
     }
 
-    @PostMapping("/admin/updateUser/{id}")
+    @RequestMapping(value = "/updateUser/{id}",method = RequestMethod.POST)
     public String updateCategory(@PathVariable(value = "id")int id,
                                  @RequestParam(value = "name", defaultValue = "") String name,
                                  @RequestParam(value = "lastName", defaultValue = "") String lastName,

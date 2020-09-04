@@ -5,19 +5,17 @@ import main.java.project.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import main.java.project.service.ProductServiceImp;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/admin/product")
 public class ControllerProduct {
     private Product product;
-    private ProductServiceImp productService;
+    private final ProductServiceImp productService;
 
     @Autowired
     public ControllerProduct(ProductServiceImp productService) {
@@ -25,7 +23,7 @@ public class ControllerProduct {
         this.productService = productService;
     }
 
-    @GetMapping("/admin/productShow")
+    @RequestMapping(value = "/productShow")
     public String getProductShow(Model model) {
        //product = new Product();
         List<Entity> productsList = productService.showAllEntity();
@@ -42,7 +40,7 @@ public class ControllerProduct {
      * @param isActive маркер:активная позиция - "1",не активная - "0" (не активные позиции не отображаются в просмотре)
      * @return возвращает "productList" текущий список продуктов с учетом добавленного
      */
-    @PostMapping("/admin/addProduct")
+    @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     public String addCategories(@RequestParam(value = "name")String name,
                                 @RequestParam(value = "description",defaultValue = "")String description,
                                 @RequestParam(value = "price", defaultValue = "0")float price,
@@ -62,7 +60,7 @@ public class ControllerProduct {
      * на страницу "productsShow.jsp" с параметром  ("upDate", true)
      * для подготовки формы на редактирование.
      */
-    @GetMapping("/admin/Product/{action}/{id}")
+    @RequestMapping(value = "/{action}/{id}")
     public String delProduct(@PathVariable(value= "id") int id,
                              @PathVariable(value = "action") String action,
                                 Model model){
@@ -86,7 +84,7 @@ public class ControllerProduct {
      * Метод получает данные из формы "productsShow.jsp" и вносит изменения по ID в
      * таблице BOOK_PRODUCT
      */
-    @PostMapping("/admin/productUpDate/{id}")
+    @RequestMapping(value = "/productUpDate/{id}",method = RequestMethod.POST)
     public String upDateProduct(@PathVariable(value = "id")int id,
                                 @RequestParam(value = "name",defaultValue = "")String name,
                                 @RequestParam(value = "description",defaultValue = "")String description,

@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/admin/category")
 public class ControllerCategories {
     private Categories categories;
-    private CategoriesServiceImp categoriesService;
+    private final CategoriesServiceImp categoriesService;
 
 
     @Autowired
@@ -22,7 +23,7 @@ public class ControllerCategories {
         this.categoriesService = categoriesService;
     }
 
-    @GetMapping("/admin/categoryShow")
+    @RequestMapping(value = "/categoryShow")
     public String getCategoriesShow(Model model){
         List<Entity> categoriesList = categoriesService.showAllEntity();
         model.addAttribute("categories",categoriesList);
@@ -36,7 +37,7 @@ public class ControllerCategories {
      * @param id ID родительской категории
      * @param model categories - обновленный список всех категории после добавления новой
      */
-    @PostMapping ("/admin/addCategories")
+    @RequestMapping (value = "/addCategories",method = RequestMethod.POST)
     public String addCategories(@RequestParam(value = "name")String name,
                                 @RequestParam(value = "description")String description,
                                 @RequestParam(value = "parentId", defaultValue = "1")int id, Model model){
@@ -51,7 +52,7 @@ public class ControllerCategories {
     /**
      *Метод удаления и редактирования категории
      */
-    @GetMapping("/admin/Category/{action}/{id}")
+    @RequestMapping(value = "/{action}/{id}")
     public String delCategories(@PathVariable(value= "id") int id,
                                 @PathVariable(value = "action") String action,
                                 Model model){
@@ -73,7 +74,7 @@ public class ControllerCategories {
 
 
 
-    @PostMapping("/admin/updateCategory/{id}")
+    @RequestMapping(value = "/updateCategory/{id}", method = RequestMethod.POST)
     public String updateCategory(@PathVariable(value = "id")int id,
                                  @RequestParam(value = "name", defaultValue = "")String name,
                                  @RequestParam(value = "description", defaultValue = "")String description,

@@ -16,7 +16,7 @@ import java.util.List;
 public class MyUserServiceImp implements EntityService {
     private MyUser myUser;
     private static final Logger LOGGER = Logger.getLogger(MyUserServiceImp.class);
-    private DaoConnection con;
+    private final DaoConnection con;
     @Autowired
     public MyUserServiceImp(DaoConnection con) {
         this.con = con;
