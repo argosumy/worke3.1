@@ -1,39 +1,33 @@
 package main.java.project.service;
 
+import main.java.project.dao.DaoConnection;
 import main.java.project.entities.Account;
 import main.java.project.entities.Entity;
 import org.apache.log4j.Logger;
 import main.java.project.dao.ConstSQLTable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-public class AccountServiceImp implements EntityService {
+@Service
+public class AccountServiceImp {
     private static final Logger LOGGER = Logger.getLogger(AccountServiceImp.class);
     private Account account;
+    private DaoConnection con;
 
-    @Override
-    public void addEntity(Connection connection) {
-
-
+    @Autowired
+    public AccountServiceImp(DaoConnection con) {
+        this.con = con;
     }
 
-    @Override
-    public void upDateEntity(Connection con, int id) {
 
-    }
-
-    @Override
-    public void deleteEntity(Connection con, int id) {
-
-    }
-
-    @Override
-    public List<Entity> showAllEntity(Connection con) {
+    public List<Entity> showAllEntity() {
+        Connection connection = con.connect();
         List<Entity> accountList = new ArrayList<>();
         try{
-            Statement statement = con.createStatement();
+            Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(ConstSQLTable.SHOW_ALL_ACCOUNTS);
             while (resultSet.next()){
                 //int id = resultSet.getInt("ID");
@@ -50,20 +44,10 @@ public class AccountServiceImp implements EntityService {
         return accountList;
     }
 
-    @Override
-    public Entity getEntityID(Connection con, int id) {
-        return null;
-    }
-
-    @Override
-    public List<Entity> showEntityByParentId(Connection con, int parentID) {
-        return null;
-    }
-
-    public Account getEntityName(Connection con, String login){
-        Account account = null;
+    public Account getEntityName(String login){
+        Connection connection = con.connect();
         try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.SELECT_LOGIN_PASSWORD_ROLE);
+            PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.SELECT_LOGIN_PASSWORD_ROLE);
             prStatement.setString(1, login);
             ResultSet resultSet = prStatement.executeQuery();
             resultSet.next();
@@ -73,13 +57,12 @@ public class AccountServiceImp implements EntityService {
             account = new Account(loginNew,password,idUser);
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method showEntityID in AccountServiceImp",e);
+            LOGGER.error(e);
+        }
+        finally {
+            con.disconnect();
         }
         return account;
     }
 
-    @Override
-    public List<Entity> entityList(String sql, int id, Connection con) {
-        return null;
-    }
 }

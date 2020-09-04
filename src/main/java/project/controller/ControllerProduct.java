@@ -1,6 +1,5 @@
 package main.java.project.controller;
 
-import main.java.project.dao.DaoConnection;
 import main.java.project.entities.Entity;
 import main.java.project.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,30 +11,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import main.java.project.service.ProductServiceImp;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ControllerProduct {
     private Product product;
-    private final DaoConnection con;
     private ProductServiceImp productService;
 
     @Autowired
-    public ControllerProduct(DaoConnection con, ProductServiceImp productService) {
+    public ControllerProduct(ProductServiceImp productService) {
 
-        this.con = con;
         this.productService = productService;
     }
 
     @GetMapping("/admin/productShow")
     public String getProductShow(Model model) {
-        Connection connection = con.connect();
        //product = new Product();
-        List<Entity> productsList = productService.showAllEntity(connection);
+        List<Entity> productsList = productService.showAllEntity();
         model.addAttribute("products", productsList);
-        con.disconnect();
         return "productsShow";
     }
 
@@ -57,10 +51,8 @@ public class ControllerProduct {
                                 Model model){
         product = new Product(name,description,price,isActive,categoryId);
         productService.setProduct(product);
-        Connection connection = con.connect();
-        productService.addEntity(connection);
-        List<Entity> productsList = productService.showAllEntity(connection);
-        con.disconnect();
+        productService.addEntity();
+        List<Entity> productsList = productService.showAllEntity();
         model.addAttribute("products",productsList);
         return "productsShow";
     }
@@ -74,21 +66,19 @@ public class ControllerProduct {
     public String delProduct(@PathVariable(value= "id") int id,
                              @PathVariable(value = "action") String action,
                                 Model model){
-        Connection connection = con.connect();
         product = new Product();
         List<Entity> productsList = new ArrayList<>();
         if(action.equals("del")){
-            productService.deleteEntity(connection,id);
-            productsList = productService.showAllEntity(connection);
+            productService.deleteEntity(id);
+            productsList = productService.showAllEntity();
             model.addAttribute("products",productsList);
         }
         if(action.equals("upDate")){
-            product = (Product) productService.getEntityID(connection,id);
+            product = (Product) productService.getEntityID(id);
             productsList.add(product);
             model.addAttribute("products",productsList);
             model.addAttribute("upDate", true);
         }
-        con.disconnect();
         return "productsShow";
     }
 
@@ -107,8 +97,7 @@ public class ControllerProduct {
                                 ){
         product = new Product();
         Product productUpDate = new Product();
-        Connection connection = con.connect();
-        product  = (Product) productService.getEntityID(connection,id);
+        product  = (Product) productService.getEntityID(id);
         if (name.equals("")){
             productUpDate.setName(product.getName());
         }
@@ -140,11 +129,10 @@ public class ControllerProduct {
             productUpDate.setCategoryId(categoryId);
         }
         productService.setProduct(productUpDate);
-        productService.upDateEntity(connection,id);
+        productService.upDateEntity(id);
 
-        List<Entity> rezult = productService.showAllEntity(connection);
+        List<Entity> rezult = productService.showAllEntity();
         model.addAttribute("products",rezult);
-        con.disconnect();
         return "productsShow";
     }
 

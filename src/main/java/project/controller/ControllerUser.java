@@ -7,33 +7,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import main.java.project.dao.DaoConnection;
 import main.java.project.entities.Account;
 import main.java.project.entities.Entity;
 import main.java.project.entities.MyUser;
 import main.java.project.service.MyUserServiceImp;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
 public class ControllerUser {
-    private final DaoConnection con;
     private MyUserServiceImp myUserService;
 
     @Autowired
-    public ControllerUser(DaoConnection con, MyUserServiceImp myUserService) {
+    public ControllerUser(MyUserServiceImp myUserService) {
 
-        this.con = con;
         this.myUserService = myUserService;
     }
 
     @GetMapping("/admin/userShow")
     public String getEntity(Model model) {
-        Connection connection = con.connect();
-        List<Entity> myUserList = myUserService.showAllEntity(connection);
+        List<Entity> myUserList = myUserService.showAllEntity();
         model.addAttribute("myUsers",myUserList);
-        con.disconnect();
         return "accountShow";
     }
 
@@ -44,7 +38,6 @@ public class ControllerUser {
                             @RequestParam(value = "login") String login,
                             @RequestParam(value = "password") String password,
                             Model model) {
-        Connection connection = con.connect();
         MyUser myUser = new MyUser();
         myUser.setName(name);
         myUser.setLastName(lastName);
@@ -54,9 +47,8 @@ public class ControllerUser {
         account.setPassword(password);
         myUser.setAccount(account);
         myUserService.setMyUser(myUser);
-        myUserService.addEntity(connection);
-        List<Entity> myUserList = myUserService.showAllEntity(connection);
-        con.disconnect();
+        myUserService.addEntity();
+        List<Entity> myUserList = myUserService.showAllEntity();
         model.addAttribute("myUsers",myUserList);
         return "accountShow";
     }
@@ -68,26 +60,24 @@ public class ControllerUser {
                                 @PathVariable(value = "action") String action,
                                 Model model){
         MyUser myUser;
-        Connection connection = con.connect();
         List<Entity> myUsersList = new ArrayList<>();
         if(id != 1) { //ограничение на удаление первого администратора
             if (action.equals("del")) {
-                myUserService.deleteEntity(connection, id);
-                myUsersList = myUserService.showAllEntity(connection);
+                myUserService.deleteEntity(id);
+                myUsersList = myUserService.showAllEntity();
                 model.addAttribute("myUsers", myUsersList);
             }
             if (action.equals("upDate")) {
-                myUser = (MyUser) myUserService.getEntityID(connection, id);
+                myUser = (MyUser) myUserService.getEntityID(id);
                 myUsersList.add(myUser);
                 model.addAttribute("myUsers", myUsersList);
                 model.addAttribute("upDate", true);
             }
         }
         else{
-            myUsersList = myUserService.showAllEntity(connection);
+            myUsersList = myUserService.showAllEntity();
             model.addAttribute("myUsers", myUsersList);
         }
-        con.disconnect();
         return "accountShow";
     }
 
@@ -101,8 +91,7 @@ public class ControllerUser {
                                  Model model){
         MyUser myUser;
         MyUser myUserUpDate = new MyUser();
-        Connection connection = con.connect();
-        myUser  = (MyUser) myUserService.getEntityID(connection,id);
+        myUser  = (MyUser) myUserService.getEntityID(id);
         Account accountUpDate = new Account();
         if (name.equals("")){
             myUserUpDate.setName(myUser.getName());
@@ -134,10 +123,9 @@ public class ControllerUser {
         else accountUpDate.setPassword(password);
         myUserUpDate.setAccount(accountUpDate);
         myUserService.setMyUser(myUserUpDate);
-        myUserService.upDateEntity(connection,id);
-        List<Entity> res = myUserService.showAllEntity(connection);
+        myUserService.upDateEntity(id);
+        List<Entity> res = myUserService.showAllEntity();
         model.addAttribute("myUsers",res);
-        con.disconnect();
         return "accountShow";
     }
 }

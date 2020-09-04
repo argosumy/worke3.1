@@ -1,9 +1,11 @@
 package main.java.project.service;
 
+import main.java.project.dao.DaoConnection;
 import main.java.project.entities.Categories;
 import main.java.project.entities.Entity;
 import main.java.project.entities.Product;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import main.java.project.dao.ConstSQLTable;
 
@@ -14,8 +16,13 @@ import java.util.List;
 public class ProductServiceImp implements EntityService {
     private Product product;
     private static final Logger LOGGER = Logger.getLogger(ProductServiceImp.class);
+    private DaoConnection con;
+    private CategoriesServiceImp categoriesService;
 
-    public ProductServiceImp() {
+    @Autowired
+    public ProductServiceImp(DaoConnection con, CategoriesServiceImp categoriesService) {
+        this.con = con;
+        this.categoriesService = categoriesService;
     }
 
     public ProductServiceImp(Product product) {
@@ -23,9 +30,10 @@ public class ProductServiceImp implements EntityService {
     }
 
     @Override
-    public void addEntity(Connection con) {
+    public void addEntity() {
+        Connection connection = con.connect();
         try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.ADD_PRODUCT);
+            PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.ADD_PRODUCT);
             prStatement.setString(1,product.getName());
             prStatement.setString(2,product.getDescription());
             prStatement.setFloat(3,product.getPrice());
@@ -36,14 +44,17 @@ public class ProductServiceImp implements EntityService {
         catch (SQLException e){
             LOGGER.error("ERROR method insert Entity in ProductService",e);
         }
-
+        finally {
+            con.disconnect();
+        }
     }
 
     @Override
-    public void upDateEntity(Connection con, int id) {
+    public void upDateEntity(int id) {
 //"UPDATE BOOK_PRODUCT SET NAME = ?,DESCRIPTION = ?,PRICE = ?,IS_ACTIVE = ?,CATEGORY_ID = ? WHERE PRODUCT_ID = ?"
+        Connection connection = con.connect();
         try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.UPDATE_PRODUCT_ID);
+            PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.UPDATE_PRODUCT_ID);
             prStatement.setString(1,product.getName());
             prStatement.setString(2,product.getDescription());
             prStatement.setFloat(3,product.getPrice());
@@ -55,55 +66,61 @@ public class ProductServiceImp implements EntityService {
         catch (SQLException e){
             LOGGER.error("ERROR method delete Entity in ProductService",e);
         }
+        finally {
+            con.disconnect();
+        }
     }
 
     @Override
-    public void deleteEntity(Connection con, int id) {
+    public void deleteEntity(int id) {
+        Connection connection = con.connect();
         try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.DELETE_PRODUCT_ID);
+            PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.DELETE_PRODUCT_ID);
             prStatement.setInt(1,id);
             prStatement.executeUpdate();
         }
         catch (SQLException e){
             LOGGER.error("ERROR method delete Entity in Product",e);
         }
+        finally {
+            con.disconnect();
+        }
     }
 
     @Override
-    public List<Entity> showAllEntity(Connection con) {
-        return entityList(ConstSQLTable.SHOW_ALL_PRODUCTS,-1,con);
+    public List<Entity> showAllEntity() {
+        return entityList(ConstSQLTable.SHOW_ALL_PRODUCTS,-1);
     }
 
     @Override
-    public Entity getEntityID(Connection con, int id) {
-       return entityList(ConstSQLTable.SHOW_PRODUCT_ID,id,con).get(0);
+    public Entity getEntityID(int id) {
+       return entityList(ConstSQLTable.SHOW_PRODUCT_ID,id).get(0);
     }
 
     @Override
-    public List<Entity> showEntityByParentId(Connection con, int parentID) {
-        return entityList(ConstSQLTable.SHOW_PRODUCTS_BY_CATEGORY_ID,parentID,con);
+    public List<Entity> showEntityByParentId(int parentID) {
+        return entityList(ConstSQLTable.SHOW_PRODUCTS_BY_CATEGORY_ID,parentID);
     }
 
     /**
      * Метод создает спиок Product
      * @param sql запрос SQL
      * @param id (параметр для  PreparedStatement)
-     * @param con (Connection)
      */
     @Override
-    public List<Entity> entityList(String sql, int id, Connection con){
+    public List<Entity> entityList(String sql, int id){
+        Connection connection = con.connect();
         List <Entity> productList = new ArrayList<>();
         Product product;
         Categories category;
-        CategoriesServiceImp categoriesService = new CategoriesServiceImp();
         ResultSet resultSet;
         try {
             if(id != -1){
-                PreparedStatement prStatement = con.prepareStatement(sql);
+                PreparedStatement prStatement = connection.prepareStatement(sql);
                 prStatement.setInt(1,id);
                 resultSet = prStatement.executeQuery();}
             else{
-                Statement statement = con.createStatement();
+                Statement statement = connection.createStatement();
                 resultSet = statement.executeQuery(sql);
             }
             while (resultSet.next()){
@@ -114,12 +131,15 @@ public class ProductServiceImp implements EntityService {
                 int isActive = resultSet.getInt("IS_ACTIVE");
                 int categoryId = resultSet.getInt("CATEGORY_ID");
                 product = new Product(idProduct,name,description,price,isActive,categoryId);
-                category =(Categories) categoriesService.getEntityID(con,categoryId);
+                category =(Categories) categoriesService.getEntityID(categoryId);
                 product.setCategories(category);
                 productList.add(product);
             }
         } catch (SQLException e) {
             LOGGER.error(e);
+        }
+        finally {
+            con.disconnect();
         }
         return productList;
     }

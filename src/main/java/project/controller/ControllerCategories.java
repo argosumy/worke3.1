@@ -1,6 +1,5 @@
 package main.java.project.controller;
 
-import main.java.project.dao.DaoConnection;
 import main.java.project.entities.Categories;
 import main.java.project.entities.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import main.java.project.service.CategoriesServiceImp;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,21 +15,17 @@ import java.util.List;
 public class ControllerCategories {
     private Categories categories;
     private CategoriesServiceImp categoriesService;
-    private final DaoConnection con;
 
 
     @Autowired
-    public ControllerCategories(DaoConnection con, CategoriesServiceImp categoriesService) {
-        this.con = con;
+    public ControllerCategories(CategoriesServiceImp categoriesService) {
         this.categoriesService = categoriesService;
     }
 
     @GetMapping("/admin/categoryShow")
     public String getCategoriesShow(Model model){
-        Connection connection = con.connect();
-        List<Entity> categoriesList = categoriesService.showAllEntity(connection);
+        List<Entity> categoriesList = categoriesService.showAllEntity();
         model.addAttribute("categories",categoriesList);
-        con.disconnect();
         return "categoryShow";
     }
 
@@ -47,11 +41,9 @@ public class ControllerCategories {
                                 @RequestParam(value = "description")String description,
                                 @RequestParam(value = "parentId", defaultValue = "1")int id, Model model){
         categories = new Categories(name,description,id);
-        categoriesService = new CategoriesServiceImp(categories);
-        Connection connection = con.connect();
-        categoriesService.addEntity(connection);
-        List<Entity> categoriesList = categoriesService.showAllEntity(connection);
-        con.disconnect();
+        categoriesService.setCategory(categories);
+        categoriesService.addEntity();
+        List<Entity> categoriesList = categoriesService.showAllEntity();
         model.addAttribute("categories",categoriesList);
         return "categoryShow";
     }
@@ -63,21 +55,19 @@ public class ControllerCategories {
     public String delCategories(@PathVariable(value= "id") int id,
                                 @PathVariable(value = "action") String action,
                                 Model model){
-        Connection connection = con.connect();
         categories = new Categories();
         List<Entity> categoriesList = new ArrayList<>();
         if(action.equals("del")){
-            categoriesService.deleteEntity(connection,id);
-            categoriesList = categoriesService.showAllEntity(connection);
+            categoriesService.deleteEntity(id);
+            categoriesList = categoriesService.showAllEntity();
             model.addAttribute("categories",categoriesList);
         }
         if(action.equals("upDate")){
-            categories = (Categories) categoriesService.getEntityID(connection,id);
+            categories = (Categories) categoriesService.getEntityID(id);
             categoriesList.add(categories);
             model.addAttribute("categories",categoriesList);
             model.addAttribute("upDate", true);
         }
-        con.disconnect();
         return "categoryShow";
     }
 
@@ -89,10 +79,8 @@ public class ControllerCategories {
                                  @RequestParam(value = "description", defaultValue = "")String description,
                                  @RequestParam(value = "parentId",defaultValue = "0")int parentId,
                                  Model model){
-        categories = new Categories();
         Categories categoriesUpDate = new Categories();
-        Connection connection = con.connect();
-        categories  = (Categories) categoriesService.getEntityID(connection,id);
+        categories  = (Categories) categoriesService.getEntityID(id);
         if (name.equals("")){
             categoriesUpDate.setName(categories.getName());
         }
@@ -112,12 +100,10 @@ public class ControllerCategories {
             categoriesUpDate.setParentId(parentId);
         }
         categoriesService.setCategory(categoriesUpDate);
-        categoriesService.upDateEntity(connection,id);
-      //  categoriesUpDate.upDateEntity(connection,id);
+        categoriesService.upDateEntity(id);
 
-        List<Entity> res = categoriesService.showAllEntity(connection);
+        List<Entity> res = categoriesService.showAllEntity();
         model.addAttribute("categories",res);
-        con.disconnect();
         return "categoryShow";
     }
 

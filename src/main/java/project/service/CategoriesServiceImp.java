@@ -1,6 +1,8 @@
 package main.java.project.service;
 
+import main.java.project.dao.DaoConnection;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import main.java.project.dao.ConstSQLTable;
 import main.java.project.entities.Categories;
@@ -14,8 +16,10 @@ import java.util.List;
 public class CategoriesServiceImp implements EntityService {
     private Categories category;
     private static final Logger LOGGER = Logger.getLogger(CategoriesServiceImp.class);
-
-    public CategoriesServiceImp() {
+    private DaoConnection con;
+    @Autowired
+    public CategoriesServiceImp(DaoConnection con) {
+        this.con = con;
     }
 
     public CategoriesServiceImp(Categories category) {
@@ -23,7 +27,8 @@ public class CategoriesServiceImp implements EntityService {
     }
 
     @Override
-    public void addEntity(Connection connection) {
+    public void addEntity() {
+        Connection connection = con.connect();
         try {
             PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.ADD_CATEGORIES);
             prStatement.setString(1,category.getName());
@@ -33,16 +38,19 @@ public class CategoriesServiceImp implements EntityService {
 
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method insert Entity in Categories",e);
+            LOGGER.error(e);
         }
-
+        finally {
+            con.disconnect();
+        }
     }
 
     @Override
-    public void upDateEntity(Connection con, int id) {
+    public void upDateEntity(int id) {
         //"UPDATE BOOK_CATEGORIES SET NAME = ?,DESCRIPTION = ?,PARENT_ID = ? WHERE CATEGORY_ID = ?"
-        try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.UPDATE_CATEGORY_ID);
+        Connection connection = con.connect();
+            try {
+            PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.UPDATE_CATEGORY_ID);
             prStatement.setString(1,category.getName());
             prStatement.setString(2,category.getDescription());
             prStatement.setInt(3,category.getParentId());
@@ -50,47 +58,55 @@ public class CategoriesServiceImp implements EntityService {
             prStatement.executeUpdate();
         }
         catch (SQLException e){
-            LOGGER.error("ERROR method delete Entiti in Categories",e);
+            LOGGER.error(e);
+        }
+        finally {
+            con.disconnect();
         }
     }
 
     @Override
-    public void deleteEntity(Connection con, int id) {
+    public void deleteEntity(int id) {
+        Connection connection = con.connect();
         try {
-            PreparedStatement prStatement = con.prepareStatement(ConstSQLTable.DELETE_CATEGORIES_ID);
+            PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.DELETE_CATEGORIES_ID);
             prStatement.setInt(1,id);
             prStatement.executeUpdate();
         }
         catch (SQLException e){
             LOGGER.error("ERROR method delete Entiti in Categories",e);
         }
+        finally {
+            con.disconnect();
+        }
     }
 
     @Override
-    public List<Entity> showAllEntity(Connection con) {
-        return entityList(ConstSQLTable.SHOW_ALL_CATEGORIES,-1,con);
+    public List<Entity> showAllEntity() {
+        return entityList(ConstSQLTable.SHOW_ALL_CATEGORIES,-1);
     }
 
     @Override
-    public Entity getEntityID(Connection con, int id) {
-        return entityList(ConstSQLTable.SHOW_CATEGORIES_ID,id,con).get(0);
+    public Entity getEntityID(int id) {
+        return entityList(ConstSQLTable.SHOW_CATEGORIES_ID,id).get(0);
     }
 
     @Override
-    public List<Entity> showEntityByParentId(Connection con, int parentID) {
-        return entityList(ConstSQLTable.SHOW_CATEGORIES_BY_PARENT,parentID,con);
+    public List<Entity> showEntityByParentId(int parentID) {
+        return entityList(ConstSQLTable.SHOW_CATEGORIES_BY_PARENT,parentID);
     }
     @Override
-    public List<Entity> entityList(String sql,int id, Connection con){
+    public List<Entity> entityList(String sql,int id){
+        Connection connection = con.connect();
         List<Entity> categoriesList = new ArrayList<>();
         ResultSet resultSet;
         try{
             if(id < 0){
-            Statement statement = con.createStatement();
+            Statement statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
             }
             else {
-                PreparedStatement statement = con.prepareStatement(sql);
+                PreparedStatement statement = connection.prepareStatement(sql);
                 statement.setInt(1,id);
                 resultSet = statement.executeQuery();
             }
@@ -105,6 +121,9 @@ public class CategoriesServiceImp implements EntityService {
         }
         catch (SQLException e){
             LOGGER.error("ERROR method showAllEntity in Categories",e);
+        }
+        finally {
+            con.disconnect();
         }
         return categoriesList;
     }
