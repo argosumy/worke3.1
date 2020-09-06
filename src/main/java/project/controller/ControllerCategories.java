@@ -72,37 +72,13 @@ public class ControllerCategories {
         return "categoryShow";
     }
 
-
-
     @RequestMapping(value = "/updateCategory/{id}", method = RequestMethod.POST)
     public String updateCategory(@PathVariable(value = "id")int id,
                                  @RequestParam(value = "name", defaultValue = "")String name,
                                  @RequestParam(value = "description", defaultValue = "")String description,
                                  @RequestParam(value = "parentId",defaultValue = "0")int parentId,
                                  Model model){
-        Categories categoriesUpDate = new Categories();
-        categories  = (Categories) categoriesService.getEntityID(id);
-        if (name.equals("")){
-            categoriesUpDate.setName(categories.getName());
-        }
-        else {
-            categoriesUpDate.setName(name);
-        }
-        if (description.equals("")){
-            categoriesUpDate.setDescription(categories.getDescription());
-        }
-        else {
-            categoriesUpDate.setDescription(description);
-        }
-        if (parentId == 0) {
-            categoriesUpDate.setParentId(categories.getParentId());
-        }
-        else {
-            categoriesUpDate.setParentId(parentId);
-        }
-        categoriesService.setCategory(categoriesUpDate);
-        categoriesService.upDateEntity(id);
-
+        categoriesService.upDateEntity(id, new Categories(name,description,parentId));
         List<Entity> res = categoriesService.showAllEntity();
         model.addAttribute("categories",res);
         return "categoryShow";

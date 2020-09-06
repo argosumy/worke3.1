@@ -29,7 +29,7 @@
         <div>
             <nav class="one">
                 <ul>
-                    <li><a  href=<c:url value="/admin/categoryShow"/>>Работа с категориями</a></li>
+                    <li><a  href=<c:url value="/admin/category/categoryShow"/>>Работа с категориями</a></li>
                     <li><a  href=<c:url value="/admin/product/productShow"/>>Работа с товарами</a></li>
                     <li><a  href=<c:url value="/admin/user/userShow"/>>Работа с администраторами</a></li>
                 </ul>
@@ -48,14 +48,14 @@
 <div>
     <ul>
         <c:forEach var ="category" items="${categories}" >
-            <li><a href="/showBook/${category.id}">${category.name}</a></li>
+            <li><a href="<c:url value='${category.id}'/>">${category.name}</a></li>
         </c:forEach>
     </ul>
 </div>>
 <div>
     <ul>
         <c:forEach var="product" items="${products}">
-            <li><a href="/showBook/product/${product.id}">"${product.name}"</a></li>
+            <li><a href="<c:url value='/showBook/product/${product.id}'/>">"${product.name}"</a></li>
         </c:forEach>
     </ul>
 </div>

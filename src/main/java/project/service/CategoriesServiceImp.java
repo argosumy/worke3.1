@@ -44,8 +44,9 @@ public class CategoriesServiceImp implements EntityService {
     }
 
     @Override
-    public void upDateEntity(int id) {
+    public void upDateEntity(int id, Entity entity) {
         //"UPDATE BOOK_CATEGORIES SET NAME = ?,DESCRIPTION = ?,PARENT_ID = ? WHERE CATEGORY_ID = ?"
+        category = category((Categories) entity,id);
         Connection connection = con.connect();
             try {
             PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.UPDATE_CATEGORY_ID);
@@ -62,6 +63,38 @@ public class CategoriesServiceImp implements EntityService {
             con.disconnect();
         }
     }
+
+    /**
+     * Метод подготавливает Категорию к редактированию
+     * @param categoryUpDate категория пришедшая из формы categoryShow с новыми полями
+     * @param id категории из базы данных, которая будет редактироваться.
+     * @return возвращает категорию для редактирования
+     */
+    private Categories category(Categories categoryUpDate, int id){
+        Categories categoryReturn = new Categories();
+        category  = (Categories) getEntityID(id);
+        if (categoryUpDate.getName().equals("")){
+            categoryReturn.setName(category.getName());
+        }
+        else {
+            categoryReturn.setName(categoryUpDate.getName());
+        }
+        if (categoryUpDate.getDescription().equals("")){
+            categoryReturn.setDescription(category.getDescription());
+        }
+        else {
+            categoryReturn.setDescription(categoryUpDate.getDescription());
+        }
+        if (categoryUpDate.getParentId() == 0) {
+            categoryReturn.setParentId(category.getParentId());
+        }
+        else {
+            categoryReturn.setParentId(categoryUpDate.getParentId());
+        }
+        return categoryReturn;
+    }
+
+
 
     @Override
     public void deleteEntity(int id) {

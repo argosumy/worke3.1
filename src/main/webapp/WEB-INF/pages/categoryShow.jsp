@@ -63,7 +63,7 @@
             <tr>ВВОД НОВОЙ КАТЕГОРИИ</tr>
             <c:set var="action" value="/admin/category/addCategories"/>
         </c:if>
-        <form action="${action}" method="post">
+        <form action="<c:url value= '${action}'/>" method="post">
             <td>Автозаполнение</td>>
             <td><input name="name" type="text"  content="НАЗВАНИЕ КАТЕГОРИИ"/></td>
             <td><input name="description" type="text"/></td>

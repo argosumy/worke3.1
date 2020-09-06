@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EntityService {
     void addEntity();
-    void upDateEntity(int id);
+    void upDateEntity(int id, Entity entity);
     void deleteEntity(int id);
     List<Entity> showAllEntity();
     Entity getEntityID(int id);

@@ -7,6 +7,11 @@ public class Account extends Entity  {
 
 
     public Account(){}
+    public Account(String login, String password) {
+        super(login);
+        this.password = password;
+        this.role = "ADMIN";
+    }
 
     public Account(String login, String password, int id_user) {
         super(login);

@@ -52,8 +52,9 @@ public class MyUserServiceImp implements EntityService {
     }
 
     @Override
-    public void upDateEntity(int id) {
+    public void upDateEntity(int id, Entity entity) {
         Connection connection = con.connect();
+        myUser = myUser(id, (MyUser) entity);
         try {
             //UPDATE BOOK_USERS SET NAME = ?,LAST_NAME = ?,PHONE = ? WHERE ID = ?";
             PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.UPDATE_USER_ID);
@@ -75,6 +76,47 @@ public class MyUserServiceImp implements EntityService {
         finally {
             con.disconnect();
         }
+    }
+    /**
+     * Метод подготавливает Категорию к редактированию
+     * @param entityUpDate данные пользователя пришедшие из формы accountShow с новыми полями
+     * @param id пользователя из базы данных, который будет редактироваться.
+     * @return возвращает пользователя для редактирования
+     */
+    private MyUser myUser(int id, MyUser entityUpDate){
+        myUser = (MyUser) getEntityID(id);
+        MyUser myUserReturn = new MyUser();
+        Account account = new Account();
+        if (entityUpDate.getName().equals("")){
+            myUserReturn.setName(myUser.getName());
+        }
+        else {
+            myUserReturn.setName(entityUpDate.getName());
+        }
+        if (entityUpDate.getLastName().equals("")){
+            myUserReturn.setLastName(myUser.getLastName());
+        }
+        else {
+            myUserReturn.setLastName(entityUpDate.getLastName());
+        }
+        if (entityUpDate.getPhone().equals("")) {
+            myUserReturn.setPhone(myUser.getPhone());
+        }
+        else {
+            myUserReturn.setPhone(entityUpDate.getPhone());
+        }
+        if (entityUpDate.getAccount().getName().equals("")){
+            account.setName(myUser.getAccount().getName());
+        }
+        else {
+            account.setName(entityUpDate.getAccount().getName());
+        }
+        if(entityUpDate.getAccount().getPassword().equals("")){
+            account.setPassword(myUser.getAccount().getPassword());
+        }
+        else account.setPassword(entityUpDate.getAccount().getPassword());
+        myUserReturn.setAccount(account);
+        return myUserReturn;
     }
 
     @Override

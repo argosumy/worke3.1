@@ -36,14 +36,7 @@ public class ControllerUser {
                             @RequestParam(value = "login") String login,
                             @RequestParam(value = "password") String password,
                             Model model) {
-        MyUser myUser = new MyUser();
-        myUser.setName(name);
-        myUser.setLastName(lastName);
-        myUser.setPhone(phone);
-        Account account = new Account();
-        account.setName(login);
-        account.setPassword(password);
-        myUser.setAccount(account);
+        MyUser myUser = new MyUser(name,lastName,phone, new Account(login,password));
         myUserService.setMyUser(myUser);
         myUserService.addEntity();
         List<Entity> myUserList = myUserService.showAllEntity();
@@ -87,41 +80,8 @@ public class ControllerUser {
                                  @RequestParam(value = "login", defaultValue = "") String login,
                                  @RequestParam(value = "password", defaultValue = "") String password,
                                  Model model){
-        MyUser myUser;
-        MyUser myUserUpDate = new MyUser();
-        myUser  = (MyUser) myUserService.getEntityID(id);
-        Account accountUpDate = new Account();
-        if (name.equals("")){
-            myUserUpDate.setName(myUser.getName());
-        }
-        else {
-            myUserUpDate.setName(name);
-        }
-        if (lastName.equals("")){
-            myUserUpDate.setLastName(myUser.getLastName());
-        }
-        else {
-            myUserUpDate.setLastName(lastName);
-        }
-        if (phone.equals("")) {
-            myUserUpDate.setPhone(myUser.getPhone());
-        }
-        else {
-            myUserUpDate.setPhone(phone);
-        }
-        if (login.equals("")){
-            accountUpDate.setName(myUser.getAccount().getName());
-        }
-        else {
-            accountUpDate.setName(login);
-        }
-        if(password.equals("")){
-            accountUpDate.setPassword(myUser.getAccount().getPassword());
-        }
-        else accountUpDate.setPassword(password);
-        myUserUpDate.setAccount(accountUpDate);
-        myUserService.setMyUser(myUserUpDate);
-        myUserService.upDateEntity(id);
+
+        myUserService.upDateEntity(id, new MyUser(name, lastName, phone, new Account(login, password,id)));
         List<Entity> res = myUserService.showAllEntity();
         model.addAttribute("myUsers",res);
         return "accountShow";

@@ -23,9 +23,8 @@ public class ControllerProduct {
         this.productService = productService;
     }
 
-    @RequestMapping(value = "/productShow")
+    @RequestMapping(value = "/productShow", method = RequestMethod.GET)
     public String getProductShow(Model model) {
-       //product = new Product();
         List<Entity> productsList = productService.showAllEntity();
         model.addAttribute("products", productsList);
         return "productsShow";
@@ -60,7 +59,7 @@ public class ControllerProduct {
      * на страницу "productsShow.jsp" с параметром  ("upDate", true)
      * для подготовки формы на редактирование.
      */
-    @RequestMapping(value = "/{action}/{id}")
+    @RequestMapping(value = "/{action}/{id}",method = RequestMethod.GET)
     public String delProduct(@PathVariable(value= "id") int id,
                              @PathVariable(value = "action") String action,
                                 Model model){
@@ -90,47 +89,12 @@ public class ControllerProduct {
                                 @RequestParam(value = "description",defaultValue = "")String description,
                                 @RequestParam(value = "price",defaultValue = "0")float price,
                                 @RequestParam(value = "isActive",defaultValue = "-1")int is_active,
-                                @RequestParam(value = "category_id",defaultValue = "0")int categoryId,
+                                @RequestParam(value = "categoryId",defaultValue = "0")int categoryId,
                                 Model model
                                 ){
-        product = new Product();
-        Product productUpDate = new Product();
-        product  = (Product) productService.getEntityID(id);
-        if (name.equals("")){
-            productUpDate.setName(product.getName());
-        }
-        else {
-            productUpDate.setName(name);
-        }
-        if (description.equals("")){
-            productUpDate.setDescription(product.getDescription());
-        }
-        else {
-            productUpDate.setDescription(description);
-        }
-        if (price == 0) {
-            productUpDate.setPrice(product.getPrice());
-        }
-        else {
-            productUpDate.setPrice(price);
-        }
-        if (is_active == -1){
-            productUpDate.setActive(product.getIsActive());
-        }
-        else {
-            productUpDate.setActive(is_active);
-        }
-        if (categoryId == 0){
-            productUpDate.setCategoryId(product.getCategoryId());
-        }
-        else {
-            productUpDate.setCategoryId(categoryId);
-        }
-        productService.setProduct(productUpDate);
-        productService.upDateEntity(id);
-
-        List<Entity> rezult = productService.showAllEntity();
-        model.addAttribute("products",rezult);
+        productService.upDateEntity(id,new Product(name,description,price,is_active,categoryId));
+        List<Entity> result = productService.showAllEntity();
+        model.addAttribute("products",result);
         return "productsShow";
     }
 

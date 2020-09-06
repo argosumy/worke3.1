@@ -47,8 +47,9 @@ public class ProductServiceImp implements EntityService {
     }
 
     @Override
-    public void upDateEntity(int id) {
+    public void upDateEntity(int id, Entity entity) {
 //"UPDATE BOOK_PRODUCT SET NAME = ?,DESCRIPTION = ?,PRICE = ?,IS_ACTIVE = ?,CATEGORY_ID = ? WHERE PRODUCT_ID = ?"
+        product = (Product) product(id, (Product) entity);
         Connection connection = con.connect();
         try {
             PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.UPDATE_PRODUCT_ID);
@@ -67,6 +68,48 @@ public class ProductServiceImp implements EntityService {
             con.disconnect();
         }
     }
+    /**
+     * Метод подготавливает Product к редактированию
+     * @param productUpDate продукт пришедший из формы productShow с новыми полями
+     * @param id категории из базы данных, которая будет редактироваться.
+     * @return возвращает подготовленный Product для редактирования
+     */
+    private Product product(int id, Product productUpDate){
+        Product productReturn = new Product();
+        product  = (Product) getEntityID(id);
+        if (productUpDate.getName().equals("")){
+            productReturn.setName(product.getName());
+        }
+        else {
+            productReturn.setName(productUpDate.getName());
+        }
+        if (productUpDate.getDescription().equals("")){
+            productReturn.setDescription(product.getDescription());
+        }
+        else {
+            productReturn.setDescription(productUpDate.getDescription());
+        }
+        if (productUpDate.getPrice() == 0) {
+            productReturn.setPrice(product.getPrice());
+        }
+        else {
+            productReturn.setPrice(productUpDate.getPrice());
+        }
+        if (productUpDate.getIsActive() == -1){
+            productReturn.setActive(product.getIsActive());
+        }
+        else {
+            productReturn.setActive(productUpDate.getIsActive());
+        }
+        if (productUpDate.getCategoryId() == 0){
+            productReturn.setCategoryId(product.getCategoryId());
+        }
+        else {
+            productReturn.setCategoryId(productUpDate.getCategoryId());
+        }
+        return productReturn;
+    }
+
 
     @Override
     public void deleteEntity(int id) {

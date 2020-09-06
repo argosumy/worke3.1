@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: User
@@ -67,7 +67,7 @@
         <tr>ВВОД НОВОГО АДМИНИСТРАТОРА</tr>
         <c:set var="action" value="/admin/user/addUser"/>
     </c:if>
-    <form action="${action}" method="post">
+    <form action="<c:url value='${action}'/>" method="post">
         <tr>
             <td>Автозаполнение</td>>
             <td><input name="name" type="text"/></td>

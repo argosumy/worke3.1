@@ -37,9 +37,7 @@
     </div>
 </header>
 <h3>Товары</h3>
-<!--<a href="<c:url value=""/>"Добавить категорию</a>-->
 <table border="1" width="100%">
-    <th>
         <tr>
             <th>ID</th>
             <th>Название</th>
@@ -49,7 +47,6 @@
             <th>Категория</th>
             <th colspan="2"></th>
         </tr>
-    </th>
     <c:forEach var="product" items="${products}">
         <tr>
             <td>${product.id}</td>
@@ -62,7 +59,7 @@
             <td><a href="<c:url value="/admin/product/del/${product.id}"/>">Удалить</a></td>
         </tr>
     </c:forEach>
-    </table>
+</table>
 <table border="1" width="100%">
     <c:if test="${upDate}">
         <tr>ВВЕДИТЕ НОВЫЕ ПАРАМЕТРЫ ДЛЯ ТОВАРА</tr>
@@ -72,12 +69,12 @@
         <tr>ВВОД НОВОГО ТОВАРА </tr>
         <c:set var="action" value="/admin/product/addProduct"/>
     </c:if>
-    <form action="${action}" method="post">
+    <form action="<c:url value='${action}'/>" method="post">
         <td><input name="name" type="text" placeholder="НАЗВАНИЕ ТОВАРА"/></td>
         <td><input name="description" type="text" placeholder="ОПИСАНИЕ ТОВАРА"/></td>
         <td><input name="price" type="text" placeholder="СТОИМОСТЬ"/></td>
         <td><input name="isActive" type="number" min=0 max=1 placeholder="0/1"/></td>
-        <td><input name="categoryId" type="number" min=1 placeholder="номер категории"></td>
+        <td><input name="categoryId"  type="number" min=1 placeholder="номер категории"></td>
         <td><input type="submit" value="ВВЕСТИ" /> </td>
         <td><input type="reset" value="ОТМЕНИТЬ ВВОД" /></td>
     </form>

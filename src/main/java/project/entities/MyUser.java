@@ -10,6 +10,12 @@ public class MyUser extends Entity {
         super();
     }
 
+    public MyUser(String name, String lastName, String phone, Account account) {
+        super(name);
+        this.lastName = lastName;
+        this.phone = phone;
+        this.account = account;
+    }
 
     public MyUser(int id, String name, String lastName, String phone, Account account) {
         super(id, name);
