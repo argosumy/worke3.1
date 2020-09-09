@@ -11,7 +11,7 @@
 <head>
     <title>Book</title>
     <style><%@include file="css/style.css"%></style>
-    <%--<style><%@include file="css/test.css"%></style>--%>
+    <style><%@include file="css/login.css"%></style>
     <meta charset="UTF-8">
 </head>
 <body>
@@ -42,6 +42,7 @@
 
 <c:if test="${categories.size() > 0}">
     <div class="ramka">
+        <p>Категории</p>>
         <ul>
             <c:forEach var ="category" items="${categories}" >
                 <li><a href="<c:url value='${category.id}'/>">${category.name}</a></li>
@@ -49,19 +50,23 @@
         </ul>
     </div>>
 </c:if>
-<c:if test="${products.size() > 0}">
     <div class="ramka">
-        <c:if test="${category.id > 1}">
-            <div>
-                <h3 style="color: darkgoldenrod">${category.name}</h3>
-            </div>
+        <c:if test="${products.size() < 1}">
+            <p>НЕТ ПОЗИЦИЙ ДЛЯ ПРОСМОТРА</p>
         </c:if>
-        <ul>
-            <c:forEach var="product" items="${products}">
-                <li><a href="<c:url value='/showBook/product/${product.id}'/>">"${product.name}"</a></li>
-            </c:forEach>
-        </ul>
+        <c:if test="${products.size() > 0}">
+            <c:if test="${category.id > 1}">
+                <a href="<c:url value="/showBook/${category.parentId}"/>"><h3 style="color: darkgoldenrod">${category.name}</h3></a>
+            </c:if>
+            <ul>
+                <c:forEach var="product" items="${products}">
+                    <li><a href="<c:url value='/showBook/product/${product.id}'/>">"${product.name}"</a></li>
+                </c:forEach>
+            </ul>
+        </c:if>
     </div>
+<c:if test="${category.id > 1}">
+    <button class="btn" type="button" onclick="location.href='<c:url value="/showBook/${category.parentId}"/>'">В предыдущее меню</button>
 </c:if>
 </body>
 </html>

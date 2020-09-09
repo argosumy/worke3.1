@@ -13,6 +13,11 @@ nav ul {
     padding: 1em 0;
     background: #b7c2ec;
 }
+
+p{
+    font-size: large;
+    color: chocolate;
+}
 .one ul {
     padding: 1em 0;
     background: #c5daec;

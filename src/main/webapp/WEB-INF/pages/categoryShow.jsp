@@ -31,6 +31,7 @@
                     <li><a  href=<c:url value="/admin/category/categoryShow"/>>Работа с категориями</a></li>
                     <li><a  href=<c:url value="/admin/product/productShow"/>>Работа с товарами</a></li>
                     <li><a  href=<c:url value="/admin/user/userShow"/>>Работа с администраторами</a></li>
+                    <li><a  href=<c:url value="/showBook/1"/>>Показать католог </a></li>
                 </ul>
             </nav>
         </div>
@@ -64,7 +65,7 @@
             <c:set var="action" value="/admin/category/addCategories"/>
         </c:if>
         <form action="<c:url value= '${action}'/>" method="post">
-            <td>Автозаполнение</td>>
+            <td>Автозаполнение</td>
             <td><input name="name" type="text"  content="НАЗВАНИЕ КАТЕГОРИИ"/></td>
             <td><input name="description" type="text"/></td>
             <td><input name="parentId" type= "number" min="1"/></td>
