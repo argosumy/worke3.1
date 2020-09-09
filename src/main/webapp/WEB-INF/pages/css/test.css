@@ -13,10 +13,10 @@ color:aquamarine ;
     padding-right:10px;
 }
 ul li a{
-    color: white;
-    font-size:150%;
-    text-decoration: none;
-}
+     color: white;
+     font-size:150%;
+     text-decoration: none;
+ }
 ul li{
     color: white;
 }
@@ -26,6 +26,10 @@ header{
     margin: 2% 5% 0% 25%;
     padding : 10px;
 }
-header a {
-
+.ramka {
+    border: 4px solid #54D5FF;
+    border-radius: 10px;
+    width: 15%;
+    padding: 15px;
+    margin: 25px;
 }

@@ -73,3 +73,6 @@ INSERT INTO BOOK_PRODUCT(name, description, PRICE, IS_ACTIVE, CATEGORY_ID)values
         'as a diuretic, choleretic, mild laxative agent, to stimulate metabolism and cleaning of gastrointestinal tract,' ||
         ' urogenital system, blood vessels, joints and spine, reduction of lipids in blood serum; promotes the dissolution ' ||
         'and removal of salts, waste and toxic substances from the body; has anti-allergic effect.',42,0,3)/
+INSERT INTO BOOK_PRODUCT(name, description, PRICE, IS_ACTIVE, CATEGORY_ID)values ('CLEANNESS','is recommended as strong ' ||
+        'antiparasitic agent improving bile secretion and digestion; creates unfavorable conditions for the reproduction ' ||
+        'of parasites, cleanses the bowels, and is effective in the prophylaxis of allergic diseases.',360,0,4)/

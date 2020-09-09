@@ -39,25 +39,29 @@
 </header>
 
 <h1>BOOK Dietary supplement</h1>
-<c:if test="${category.id > 1}">
-    <div class="d">
-        <h3>${category.name}</h3>
+
+<c:if test="${categories.size() > 0}">
+    <div class="ramka">
+        <ul>
+            <c:forEach var ="category" items="${categories}" >
+                <li><a href="<c:url value='${category.id}'/>">${category.name}</a></li>
+            </c:forEach>
+        </ul>
+    </div>>
+</c:if>
+<c:if test="${products.size() > 0}">
+    <div class="ramka">
+        <c:if test="${category.id > 1}">
+            <div>
+                <h3 style="color: darkgoldenrod">${category.name}</h3>
+            </div>
+        </c:if>
+        <ul>
+            <c:forEach var="product" items="${products}">
+                <li><a href="<c:url value='/showBook/product/${product.id}'/>">"${product.name}"</a></li>
+            </c:forEach>
+        </ul>
     </div>
 </c:if>
-
-<div>
-    <ul>
-        <c:forEach var ="category" items="${categories}" >
-            <li><a href="<c:url value='${category.id}'/>">${category.name}</a></li>
-        </c:forEach>
-    </ul>
-</div>>
-<div>
-    <ul>
-        <c:forEach var="product" items="${products}">
-            <li><a href="<c:url value='/showBook/product/${product.id}'/>">"${product.name}"</a></li>
-        </c:forEach>
-    </ul>
-</div>
 </body>
 </html>

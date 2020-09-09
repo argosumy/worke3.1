@@ -2,7 +2,6 @@ package main.java.project.service;
 
 import main.java.project.entities.Entity;
 
-import java.sql.Connection;
 import java.util.List;
 
 public interface EntityService {

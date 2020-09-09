@@ -17,8 +17,9 @@
     <div>
         <h2>${product.name}</h2>
     </div>
-    <div class="description">
-        <h3>${product.description}</h3>
+    <div class="ramka">
+        <p>${product.description}</p>
+        <p style="color: #2db34a">Цена: ${product.price}</p>
     </div>
 </body>
 <div>

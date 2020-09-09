@@ -2,6 +2,7 @@ package main.java.project.controller;
 
 import main.java.project.entities.Entity;
 import main.java.project.entities.Product;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +17,11 @@ import java.util.List;
 public class ControllerProduct {
     private Product product;
     private final ProductServiceImp productService;
+    private static final Logger LOGGER = Logger.getLogger(ControllerProduct.class);
 
     @Autowired
     public ControllerProduct(ProductServiceImp productService) {
-
+        LOGGER.info("START con");
         this.productService = productService;
     }
 

@@ -29,3 +29,10 @@ nav ul {
 nav li {
     display: inline-block; /*один из способов разместить элементы в строку*/
 }
+.ramka {
+    border: 4px solid #54D5FF;
+    border-radius: 10px;
+    width: 20%;
+    padding: 15px;
+    margin: 25px;
+}

@@ -49,7 +49,7 @@ public class ProductServiceImp implements EntityService {
     @Override
     public void upDateEntity(int id, Entity entity) {
 //"UPDATE BOOK_PRODUCT SET NAME = ?,DESCRIPTION = ?,PRICE = ?,IS_ACTIVE = ?,CATEGORY_ID = ? WHERE PRODUCT_ID = ?"
-        product = (Product) product(id, (Product) entity);
+        product = product(id, (Product) entity);
         Connection connection = con.connect();
         try {
             PreparedStatement prStatement = connection.prepareStatement(ConstSQLTable.UPDATE_PRODUCT_ID);
